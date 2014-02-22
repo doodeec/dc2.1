@@ -4,7 +4,6 @@
     <h1>'Allo, 'Allo <span ng-show="currentUser">{{ currentUser.name }}</span>!</h1>
 
     <p class="lead">
-        <img src="images/yeoman.png" alt="I'm Yeoman"><br>
         Always a pleasure scaffolding your apps.
     </p>
 
@@ -12,10 +11,10 @@
 </div>
 
 <div class="row marketing">
-    <div ng-repeat="article in blogArticles">
-        <p>{{ article }}</p>
-    </div>
+    <dc-blog dc-blog-article="article" ng-repeat="article in blogArticles"></dc-blog>
 </div>
+
+<p>{{ allBlogs }}</p>
 
 <div class="footer">
     <p>♥ from the Yeoman team</p>

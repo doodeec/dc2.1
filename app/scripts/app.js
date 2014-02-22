@@ -4,7 +4,8 @@ angular.module('dc21App', [
         'ngCookies',
         'ngResource',
         'ngSanitize',
-        'ngRoute'
+        'ngRoute',
+        'dc-blog'
     ])
     .config(function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
