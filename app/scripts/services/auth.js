@@ -49,26 +49,6 @@ angular.module('dc21App')
             },
 
             /**
-             * Create a new user
-             *
-             * @param  {Object}   user     - user info
-             * @param  {Function} callback - optional
-             * @return {Promise}
-             */
-            createUser: function (user, callback) {
-                var cb = callback || angular.noop;
-
-                return User.save(user,
-                    function (user) {
-                        $rootScope.currentUser = user;
-                        return cb(user);
-                    },
-                    function (err) {
-                        return cb(err);
-                    }).$promise;
-            },
-
-            /**
              * Change password
              *
              * @param  {String}   oldPassword
@@ -106,6 +86,6 @@ angular.module('dc21App')
             isLoggedIn: function () {
                 var user = $rootScope.currentUser;
                 return !!user;
-            },
+            }
         };
     });
