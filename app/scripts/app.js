@@ -17,9 +17,9 @@ angular.module('dc21App', [
                 templateUrl: 'partials/login',
                 controller: 'LoginCtrl'
             })
-            .when('/signup', {
-                templateUrl: 'partials/signup',
-                controller: 'SignupCtrl'
+            .when('/blog/:id', {
+                templateUrl: 'partials/blog',
+                controller: 'BlogCtrl'
             })
             .when('/settings', {
                 templateUrl: 'partials/settings',

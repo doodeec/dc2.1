@@ -2,7 +2,7 @@
 
 angular.module('dc21App')
     .controller('MainCtrl', function ($scope, BlogService) {
-        BlogService.loadBlog().then(function (blogArticles) {
+        BlogService.loadBlogs().then(function (blogArticles) {
             $scope.blogArticles = blogArticles.data;
         });
 
