@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dc-blog')
-    .controller('BlogCtrl', function ($scope, $location, $routeParams, BlogService) {
+    .controller('BlogCtrl', function ($scope, $routeParams, BlogService) {
         function reloadBlog(id) {
             BlogService.loadBlog(id).then(function (blog) {
                 $scope.blog = blog.data;
