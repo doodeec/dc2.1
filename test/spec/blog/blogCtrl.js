@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: BlogCtrl', function () {
+describe('Blog:: BlogCtrl', function () {
 
     // load the controller's module
     beforeEach(module('dc-blog'));
