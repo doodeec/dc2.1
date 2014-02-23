@@ -14,8 +14,8 @@ angular.module('dc21App')
                     password: $scope.user.password
                 })
                     .then(function () {
-                        // Logged in, redirect to home
-                        $location.path('/');
+                        // Logged in, redirect to admin
+                        $location.path('/admin');
                     })
                     .catch(function (err) {
                         err = err.data;

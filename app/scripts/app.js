@@ -5,7 +5,8 @@ angular.module('dc21App', [
         'ngResource',
         'ngSanitize',
         'ngRoute',
-        'dc-blog'
+        'dc-blog',
+        'dc-admin'
     ])
     .config(function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
@@ -21,9 +22,9 @@ angular.module('dc21App', [
                 templateUrl: 'partials/blog',
                 controller: 'BlogCtrl'
             })
-            .when('/settings', {
-                templateUrl: 'partials/settings',
-                controller: 'SettingsCtrl',
+            .when('/admin', {
+                templateUrl: 'partials/admin',
+                controller: 'AdminCtrl',
                 authenticate: true
             })
             .otherwise({
