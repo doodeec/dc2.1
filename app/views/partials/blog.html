@@ -13,7 +13,12 @@
 
             <p>{{ p.text }}</p>
 
-            <div>{{ p.images }}</div>
+            <div class="blog-section-images">
+                <ng-repeat data-ng-repeat="i in p.images" class="blog-section-image">
+                    <img ng-src="{{ i.url }}" alt="{{ i.label }}"/>
+                    <label>{{ i.label }}</label>
+                </ng-repeat>
+            </div>
         </div>
         <p>{{ blog }}</p>
     </div>
