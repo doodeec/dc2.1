@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('dc-admin', [])
-    .factory('Admin', function () {
+    .factory('Admin', function (BlogService) {
         return {
+            loadAllBlogs: BlogService.loadAllBlogs,
             createBlog: function () {
             },
             editBlog: function () {

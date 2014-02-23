@@ -8,8 +8,16 @@ angular.module('dc21App')
                 'link': '/'
             },
             {
-                'title': 'Settings',
-                'link': '/settings'
+                'title': 'Blog',
+                'link': '/blog'
+            },
+            {
+                'title': 'Projects',
+                'link': '/projects'
+            },
+            {
+                'title': 'Contact',
+                'link': '/contact'
             }
         ];
 
