@@ -1,13 +1,15 @@
 <div ng-include="'partials/navbar.html'"></div>
 
-<div class="row">
+<div class="row blog">
     <div class="col-sm-12">
-        <h3>{{ blog.title }}</h3>
-        <small>{{ blog.date }}</small>
-        <p>{{ blog.shortDesc }}</p>
+        <div class="blog-header">
+            <h3>{{ blog.title }}</h3>
+            <small>{{ blog.date }}</small>
+        </div>
+        <p class="blog-short-desc">{{ blog.shortDesc }}</p>
 
-        <div ng-repeat="p in blog.content">
-            <h4 ng-if="p.header">{{ p.header }}</h4>
+        <div ng-repeat="p in blog.content" class="blog-section">
+        <h4 ng-if="p.header">{{ p.header }}</h4>
 
             <p>{{ p.text }}</p>
 
