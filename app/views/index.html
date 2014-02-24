@@ -32,7 +32,7 @@
 <!-- Add your site or application content here -->
 <div class="container" ng-view=""></div>
 
-<div>Loading... {{ activeLoader() }}</div>
+<dc-loader></dc-loader>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -52,6 +52,7 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/loader/loader.js"></script>
+<script src="scripts/loader/loaderDirective.js"></script>
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/navbar.js"></script>

@@ -21,15 +21,14 @@ angular.module('dc-loader', [])
                         loaderTasks.push(id);
                         deferedTasks[id] = null;
                         delete deferedTasks[id];
-//                    },500);
-                    }, 5);
+                    }, 500);
                 }
             },
             unregister: function (id) {
                 if (isTemplate(id)) return;
 
-                var index;
-                if (index = loaderTasks.indexOf(id)) loaderTasks.splice(index, 1);
+                var index = loaderTasks.indexOf(id);
+                if (index !== -1) loaderTasks.splice(index, 1);
 
                 if (id in deferedTasks) {
                     $timeout.cancel(deferedTasks[id]);
