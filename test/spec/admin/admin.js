@@ -36,7 +36,7 @@ describe('Admin:: Admin', function () {
                 .respond({ id: 12 });
         });
 
-        it('should load blog with id 12', function () {
+        it('should load one blog', function () {
             AdminService.loadBlog(12).then(function (response) {
                 expect(response.data).toBeDefined();
                 expect(response.data.id).toBe(12);
@@ -101,9 +101,7 @@ describe('Admin:: Admin', function () {
         });
 
         it('should send a post request to /api/blog/delete', function () {
-            var params = { id: 12 };
-
-            AdminService.deleteBlog(params).then(function (response) {
+            AdminService.deleteBlog(12).then(function (response) {
                 expect(response).toBeDefined();
                 expect(response.status).toBe(200);
             });
@@ -117,11 +115,23 @@ describe('Admin:: Admin', function () {
         });
 
         it('should send a post request to /api/blog/save', function () {
-            var params = { id: 12 };
-
-            AdminService.publishBlog(params).then(function (response) {
+            AdminService.publishBlog(12).then(function (response) {
                 expect(response).toBeDefined();
                 expect(response.status).toBe(200);
+            });
+        });
+    });
+
+    describe('method:: loadProject', function () {
+        beforeEach(function () {
+            $httpBackend.expectGET('/api/project?id=2')
+                .respond({ id: 2 });
+        });
+
+        it('should load one project', function () {
+            AdminService.loadProject(2).then(function (response) {
+                expect(response.data).toBeDefined();
+                expect(response.data.id).toBe(2);
             });
         });
     });
@@ -144,7 +154,7 @@ describe('Admin:: Admin', function () {
 
     describe('method:: editProject', function () {
         beforeEach(function () {
-            $httpBackend.expectPOST('/api/blog/save')
+            $httpBackend.expectPOST('/api/project/save')
                 .respond(200);
         });
 
@@ -152,6 +162,20 @@ describe('Admin:: Admin', function () {
             var params = { id: 12 };
 
             AdminService.editProject(params).then(function (response) {
+                expect(response).toBeDefined();
+                expect(response.status).toBe(200);
+            });
+        });
+    });
+
+    describe('method:: deleteProject', function () {
+        beforeEach(function () {
+            $httpBackend.expectPOST('/api/project/delete')
+                .respond(200);
+        });
+
+        it('should send a post request to /api/project/delete', function () {
+            AdminService.deleteProject(12).then(function (response) {
                 expect(response).toBeDefined();
                 expect(response.status).toBe(200);
             });

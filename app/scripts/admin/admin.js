@@ -48,9 +48,13 @@ angular.module('dc-admin', [])
             },
             publishBlog: function () {
             },
+            loadProject: function () {
+            },
             createProject: function () {
             },
             editProject: function () {
+            },
+            deleteProject: function () {
             }
         };
     });
