@@ -10,9 +10,17 @@ angular.module('dc-loader', [])
         }
 
         return {
+            /**
+             * Indicates if loader should or shouldn't be displayed
+             * @returns {Number}
+             */
             activeLoader: function () {
                 return loaderTasks.length;
             },
+            /**
+             * Register defered task for showing a Loader
+             * @param id
+             */
             register: function (id) {
                 if (isTemplate(id)) return;
 
@@ -24,6 +32,10 @@ angular.module('dc-loader', [])
                     }, 500);
                 }
             },
+            /**
+             * Unregister loader task and its defered task
+             * @param id
+             */
             unregister: function (id) {
                 if (isTemplate(id)) return;
 

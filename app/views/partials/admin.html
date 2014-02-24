@@ -14,20 +14,22 @@
         <h3>Create new blog</h3>
 
         <div>
-        <label for="newBlogId">ID</label>
+            <label for="newBlogId">ID</label>
             <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
                    placeholder="Unique ID">
-
             <label for="newBlogTitle">Title</label>
             <input id="newBlogTitle" type="text" ng-model="newBlog.title" class="form-control"
                    placeholder="Blog title">
-
             <label for="newBlogShortDesc">Short Description</label>
             <input id="newBlogShortDesc" type="text" ng-model="newBlog.shortDesc"
                    class="form-control" placeholder="Short Description">
-
             <label for="newBlogAllowedHome">Allow on home screen</label>
             <input id="newBlogAllowedHome" type="checkbox" ng-model="newBlog.allowedHome">
+        </div>
+
+        <div ng-repeat="section in newBlog.content">
+            <input type="text" ng-model="section.header" class="form-control" placeholder="header">
+            <input type="text" ng-model="section.text" class="form-control" placeholder="text">
         </div>
 
         <button type="submit" class="btn btn-info">Create blog</button>

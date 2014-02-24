@@ -2,33 +2,38 @@
 
 angular.module('dc-admin')
     .controller('AdminCtrl', function ($scope, $route, Auth, Admin) {
-        // private variables
 
-        // public variables
         $scope.user = Auth.currentUser();
         $scope.text = 'This is admin section';
         $scope.newBlog = {};
         $scope.blogs = [];
 
-        $scope.newBlog.content = [];
+        $scope.newBlog.content = [
+            {
+                header: null,
+                text: null
+            }
+        ];
 
-        // private methods
+        /**
+         * Reloads Blog list
+         */
         function reload() {
             Admin.loadAllBlogs().then(function (blogs) {
                 $scope.blogs = blogs.data;
             });
         }
 
-        // public methods
         $scope.logout = function () {
             Auth.logout().then($route.reload);
         };
 
         $scope.createBlog = function () {
+            console.log($scope.newBlog);
             // TODO validate - error when empty fields
             if (!angular.isDefined($scope.newBlog.id)) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
-            Admin.createBlog($scope.newBlog).then(reload);
+//            Admin.createBlog($scope.newBlog).then(reload);
         };
 
         $scope.editBlog = function (id) {
