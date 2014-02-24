@@ -6,7 +6,8 @@ angular.module('dc21App', [
         'ngSanitize',
         'ngRoute',
         'dc-blog',
-        'dc-admin'
+        'dc-admin',
+        'dc-loader'
     ])
     .config(function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
@@ -34,8 +35,9 @@ angular.module('dc21App', [
         $locationProvider.html5Mode(true);
 
         // Intercept 401s and redirect you to login
-        $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
-            return {
+        $httpProvider.interceptors.push(['$q', '$location', 'LoaderService',
+            function ($q, $location, LoaderService) {
+                return {
                 'responseError': function (response) {
                     if (response.status === 401) {
                         $location.path('/login');
@@ -44,11 +46,20 @@ angular.module('dc21App', [
                     else {
                         return $q.reject(response);
                     }
-                }
-            };
-        }]);
+                },
+                    'request': function (config) {
+                        LoaderService.register(config.url);
+                        return config || $q.when(config);
+                    },
+                    'response': function (response) {
+                        LoaderService.unregister(response.config.url);
+                        return response || $q.when(response);
+                    }
+                };
+            }]);
     })
-    .run(function ($rootScope, $location, Auth) {
+    .run(function ($rootScope, $location, Auth, LoaderService) {
+        $rootScope.activeLoader = LoaderService.activeLoader;
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$routeChangeStart', function (event, next) {
             if (next.authenticate && !Auth.isLoggedIn()) {

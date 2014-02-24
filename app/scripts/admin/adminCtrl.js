@@ -10,7 +10,14 @@ angular.module('dc-admin')
         $scope.newBlog = {};
         $scope.blogs = [];
 
+        $scope.newBlog.content = [];
+
         // private methods
+        function reload() {
+            Admin.loadAllBlogs().then(function (blogs) {
+                $scope.blogs = blogs.data;
+            });
+        }
 
         // public methods
         $scope.logout = function () {
@@ -18,12 +25,21 @@ angular.module('dc-admin')
         };
 
         $scope.createBlog = function () {
-            console.log($scope.newBlog);
-            // TODO
+            // TODO validate - error when empty fields
+            if (!angular.isDefined($scope.newBlog.id)) return;
+            $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
+            Admin.createBlog($scope.newBlog).then(reload);
+        };
+
+        $scope.editBlog = function (id) {
+            /*Admin.editBlog({
+             id: id,
+             date: new Date()
+             }).then(function() {
+             console.log('updated');
+             });*/
         };
 
         // run
-        Admin.loadAllBlogs().then(function (blogs) {
-            $scope.blogs = blogs.data;
-        });
+        reload();
     });

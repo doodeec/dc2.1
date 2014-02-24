@@ -14,7 +14,9 @@ angular.module('dc-admin', [])
                 if (!angular.isObject(params)) throw new Error('Wrong parameter type');
                 return $http.post('/api/blog/create', params);
             },
-            editBlog: function () {
+            editBlog: function (data) {
+                if (!angular.isObject(data)) throw new Error('Wrong parameter type');
+                return $http.post('/api/blog/save', data);
             },
             deleteBlog: function () {
             },

@@ -10,11 +10,11 @@
 </div>
 
 <div class="row">
-    <form ng-submit="createBlog()">
+    <form ng-submit="createBlog()" class="col-md-4">
         <h3>Create new blog</h3>
 
-        <div class="col-sm-12">
-            <label for="newBlogId">ID</label>
+        <div>
+        <label for="newBlogId">ID</label>
             <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
                    placeholder="Unique ID">
 
@@ -35,7 +35,13 @@
 </div>
 
 <div class="row">
-    <ul>
-        <li ng-repeat="b in blogs">{{ b.title }} - {{ b.id }}</li>
+    <ul class="list-group">
+        <li ng-repeat="b in blogs" class="list-group-item">
+            {{ b.title }} (id: {{ b.id }})
+            <div class="pull-right">
+                <button class="btn btn-sm btn-info" ng-click="editBlog(b.id)">Edit</button>
+                <button class="btn btn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>
+            </div>
+        </li>
     </ul>
 </div>
