@@ -2,13 +2,11 @@
 
 describe('Blog:: BlogService', function () {
 
-    // load the controller's module
     beforeEach(module('dc-blog'));
 
     var BlogService,
         $httpBackend;
 
-    // Initialize the controller and a mock scope
     beforeEach(inject(function (_$httpBackend_, _BlogService_) {
         BlogService = _BlogService_;
         $httpBackend = _$httpBackend_;

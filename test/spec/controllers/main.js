@@ -2,7 +2,6 @@
 
 describe('Controller: MainCtrl', function () {
 
-    // load the controller's module
     beforeEach(module('dc21App'));
 
     var MainCtrl,
@@ -10,7 +9,6 @@ describe('Controller: MainCtrl', function () {
         scope,
         $httpBackend;
 
-    // Initialize the controller and a mock scope
     beforeEach(inject(function (_$httpBackend_, _BlogService_, $controller, $rootScope) {
         $httpBackend = _$httpBackend_;
         BlogService = _BlogService_;

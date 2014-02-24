@@ -2,7 +2,6 @@
 
 describe('Blog:: BlogCtrl', function () {
 
-    // load the controller's module
     beforeEach(module('dc-blog'));
 
     var BlogCtrl,
@@ -11,7 +10,6 @@ describe('Blog:: BlogCtrl', function () {
         $httpBackend,
         $routeParams;
 
-    // Initialize the controller and a mock scope
     beforeEach(inject(function (_$httpBackend_, _BlogService_, $controller, $rootScope) {
         $httpBackend = _$httpBackend_;
         BlogService = _BlogService_;

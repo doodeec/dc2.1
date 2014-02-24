@@ -4,9 +4,34 @@
         <h1>Admin section</h1>
     </div>
     <div class="col-sm-12">
-        {{ user }}
+        <!--{{ user }}-->
         {{ text }}
     </div>
+</div>
+
+<div class="row">
+    <form ng-submit="createBlog()">
+        <h3>Create new blog</h3>
+
+        <div class="col-sm-12">
+            <label for="newBlogId">ID</label>
+            <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
+                   placeholder="Unique ID">
+
+            <label for="newBlogTitle">Title</label>
+            <input id="newBlogTitle" type="text" ng-model="newBlog.title" class="form-control"
+                   placeholder="Blog title">
+
+            <label for="newBlogShortDesc">Short Description</label>
+            <input id="newBlogShortDesc" type="text" ng-model="newBlog.shortDesc"
+                   class="form-control" placeholder="Short Description">
+
+            <label for="newBlogAllowedHome">Allow on home screen</label>
+            <input id="newBlogAllowedHome" type="checkbox" ng-model="newBlog.allowedHome">
+        </div>
+
+        <button type="submit" class="btn btn-info">Create blog</button>
+    </form>
 </div>
 
 <div class="row">
