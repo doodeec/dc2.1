@@ -16,10 +16,10 @@
         <div>
             <label for="newBlogId">ID</label>
             <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
-                   placeholder="Unique ID">
+                   placeholder="Unique ID" required>
             <label for="newBlogTitle">Title</label>
             <input id="newBlogTitle" type="text" ng-model="newBlog.title" class="form-control"
-                   placeholder="Blog title">
+                   placeholder="Blog title" required>
             <label for="newBlogShortDesc">Short Description</label>
             <input id="newBlogShortDesc" type="text" ng-model="newBlog.shortDesc"
                    class="form-control" placeholder="Short Description">
@@ -32,7 +32,8 @@
             <input type="text" ng-model="section.text" class="form-control" placeholder="text">
         </div>
 
-        <button type="submit" class="btn btn-info">Create blog</button>
+        <button class="btn btn-default" ng-click="addSection()">Add section</button>
+        <button type="submit" class="btn btn-info" ng-disabled="!validBlog()">Create blog</button>
     </form>
 </div>
 

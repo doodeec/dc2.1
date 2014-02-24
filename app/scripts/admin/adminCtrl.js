@@ -3,17 +3,14 @@
 angular.module('dc-admin')
     .controller('AdminCtrl', function ($scope, $route, Auth, Admin) {
 
+        var emptySection = { header: null, text: null };
+
         $scope.user = Auth.currentUser();
         $scope.text = 'This is admin section';
         $scope.newBlog = {};
         $scope.blogs = [];
 
-        $scope.newBlog.content = [
-            {
-                header: null,
-                text: null
-            }
-        ];
+        $scope.newBlog.content = [angular.copy(emptySection)];
 
         /**
          * Reloads Blog list
@@ -24,14 +21,38 @@ angular.module('dc-admin')
             });
         }
 
+        function validBlog() {
+            return Boolean(validContent() && $scope.newBlog.id && $scope.newBlog.title &&
+                (($scope.newBlog.content.length && $scope.newBlog.content[0].text) ||
+                    $scope.newBlog.shortDesc)
+            );
+        }
+
+        function validContent() {
+            var i = 0, len = $scope.newBlog.content.length, valid = true;
+            for (; i < len; i++) {
+                if (!($scope.newBlog.content[i].text)) {
+                    valid = false;
+                    break;
+                }
+            }
+            return valid;
+        }
+
+        $scope.validBlog = validBlog;
+        $scope.validContent = validContent;
+
+        $scope.addSection = function () {
+            $scope.newBlog.content.push(angular.copy(emptySection));
+        };
+
         $scope.logout = function () {
             Auth.logout().then($route.reload);
         };
 
         $scope.createBlog = function () {
             console.log($scope.newBlog);
-            // TODO validate - error when empty fields
-            if (!angular.isDefined($scope.newBlog.id)) return;
+            if (!validBlog()) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
 //            Admin.createBlog($scope.newBlog).then(reload);
         };
