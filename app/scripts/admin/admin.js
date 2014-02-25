@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc-admin', [])
+angular.module('dc-admin', ['dc-loader'])
     .factory('Admin', function ($http) {
         var errorStrings = {
             misProjId: 'Missing project id',
@@ -50,7 +50,7 @@ angular.module('dc-admin', [])
              */
             deleteBlog: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misBlogId);
-                return $http.post('/api/blog/delete', id);
+                return $http.post('/api/blog/delete', { id: id });
             },
             /**
              * Publishes blog into home page

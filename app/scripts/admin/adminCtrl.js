@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dc-admin')
-    .controller('AdminCtrl', function ($scope, $route, $timeout, Auth, Admin) {
+    .controller('AdminCtrl', function ($scope, $route, $timeout, Auth, Admin, LoaderService) {
 
         var emptySection = { header: null, text: null };
 
@@ -26,10 +26,14 @@ angular.module('dc-admin')
          * Reloads Blog list
          */
         function reload() {
+            $scope.loadingBlogs = true;
             Admin.loadAllBlogs().then(function (blogs) {
                 $scope.blogs = blogs.data;
                 $scope.editMode = false;
                 clearBlog();
+                $scope.loadingBlogs = false;
+            }, function () {
+                $scope.loadingBlogs = false;
             });
         }
 
@@ -145,10 +149,13 @@ angular.module('dc-admin')
         $scope.editBlog = function (id) {
             if (!angular.isDefined(id)) return;
 
-            $scope.editMode = true;
+            LoaderService.register('loading-blog', 0);
             Admin.loadBlog(id).then(function (blog) {
                 changeTab('blog');
+                $scope.editMode = true;
                 $scope.newBlog = blog.data;
+
+                LoaderService.unregister('loading-blog');
                 if ($scope.newBlog['_id']) delete $scope.newBlog['_id'];
                 if ($scope.newBlog['_v']) delete $scope.newBlog['_v'];
             });

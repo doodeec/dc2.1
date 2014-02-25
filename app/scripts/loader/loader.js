@@ -21,15 +21,18 @@ angular.module('dc-loader', [])
              * Register defered task for showing a Loader
              * @param id
              */
-            register: function (id) {
+            register: function (id, delay) {
                 if (isTemplate(id)) return;
+                var showDelay = 500;
+
+                if (angular.isDefined(delay)) showDelay = delay;
 
                 if (loaderTasks.indexOf(id) === -1 && !(id in deferedTasks)) {
                     deferedTasks[id] = $timeout(function () {
                         loaderTasks.push(id);
                         deferedTasks[id] = null;
                         delete deferedTasks[id];
-                    }, 500);
+                    }, showDelay);
                 }
             },
             /**

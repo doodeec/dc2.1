@@ -16,7 +16,8 @@
     <div ng-include="'partials/createProject'"></div>
 </div>
 
-<div class="row">
+<div class="well">
+    <div class="alert alert-info" ng-if="loadingBlogs">Loading blogs...</div>
     <ul class="list-group">
         <li ng-repeat="b in blogs" class="list-group-item">
             {{ b.title }} (id: {{ b.id }})
