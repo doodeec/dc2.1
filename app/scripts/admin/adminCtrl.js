@@ -21,17 +21,24 @@ angular.module('dc-admin')
             });
         }
 
+        /**
+         * Checks if blog has id, title and any content
+         */
         function validBlog() {
             return Boolean(validContent() && $scope.newBlog.id && $scope.newBlog.title &&
-                (($scope.newBlog.content.length && $scope.newBlog.content[0].text) ||
-                    $scope.newBlog.shortDesc)
+                ($scope.newBlog.content && $scope.newBlog.content.length || $scope.newBlog.shortDesc)
             );
         }
 
+        /**
+         * Checks $scope.newBlog.content for validity
+         */
         function validContent() {
+            if (!angular.isDefined($scope.newBlog.content)) return true;
+
             var i = 0, len = $scope.newBlog.content.length, valid = true;
             for (; i < len; i++) {
-                if (!($scope.newBlog.content[i].text)) {
+                if (!$scope.newBlog.content[i].text) {
                     valid = false;
                     break;
                 }

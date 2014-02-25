@@ -49,4 +49,35 @@ describe('Admin:: AdminCtrl', function () {
         expect(scope.blogs).toBeDefined();
         expect(scope.blogs.length).toBe(2);
     });
+
+    it('should validate blog', function () {
+        scope.newBlog = { id: 123, title: 'Title 123', content: [
+            { text: 'Abcd' }
+        ] };
+        expect(scope.validBlog()).toBe(true);
+
+        scope.newBlog = { id: 123, title: 'Title 123', shortDesc: 'short desc' };
+        expect(scope.validBlog()).toBe(true);
+
+        $httpBackend.flush();
+    });
+
+    it('should not validate blog', function () {
+        scope.newBlog = { id: 123, title: 'Title 123', content: [
+            { text: null }
+        ] };
+        expect(scope.validBlog()).toBe(false);
+
+        scope.newBlog = { id: 123, title: null, content: [
+            { text: 'Abcd' }
+        ] };
+        expect(scope.validBlog()).toBe(false);
+
+        scope.newBlog = { id: null, title: 'Title 123', content: [
+            { text: 'Abcd' }
+        ] };
+        expect(scope.validBlog()).toBe(false);
+
+        $httpBackend.flush();
+    });
 });
