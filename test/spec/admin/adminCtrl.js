@@ -80,4 +80,58 @@ describe('Admin:: AdminCtrl', function () {
 
         $httpBackend.flush();
     });
+
+    it('should validate content', function () {
+        scope.newBlog = { content: [
+            { text: 'Text 1' }
+        ] };
+        expect(scope.validContent()).toBe(true);
+
+        scope.newBlog = { content: [
+            { text: 'Text 1' },
+            { text: 'Text 2' }
+        ] };
+        expect(scope.validContent()).toBe(true);
+
+        scope.newBlog = { content: [
+            { text: 'Text 1' },
+            { text: 'Text 2' },
+            { text: 'Text 3' }
+        ] };
+        expect(scope.validContent()).toBe(true);
+
+        $httpBackend.flush();
+    });
+
+    it('should not validate content', function () {
+        scope.newBlog = { content: [
+            { text: null }
+        ] };
+        expect(scope.validContent()).toBe(false);
+
+        scope.newBlog = { content: [
+            { text: null },
+            { text: 'Text 2' }
+        ] };
+        expect(scope.validContent()).toBe(false);
+
+        scope.newBlog = { content: [
+            { text: 'Text 1' },
+            { text: null },
+            { text: 'Text 3' }
+        ] };
+        expect(scope.validContent()).toBe(false);
+
+        $httpBackend.flush();
+    });
+
+    it('should add sections', function () {
+        expect(scope.newBlog.content.length).toBe(1);
+        scope.addSection();
+        expect(scope.newBlog.content.length).toBe(2);
+        scope.addSection();
+        expect(scope.newBlog.content.length).toBe(3);
+
+        $httpBackend.flush();
+    });
 });
