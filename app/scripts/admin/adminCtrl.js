@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dc-admin')
-    .controller('AdminCtrl', function ($scope, $route, Auth, Admin) {
+    .controller('AdminCtrl', function ($scope, $route, $timeout, Auth, Admin) {
 
         var emptySection = { header: null, text: null };
 
@@ -33,6 +33,13 @@ angular.module('dc-admin')
         }
 
         /**
+         * Checks if project has id, title and any content
+         */
+        function validProject() {
+            return false;
+        }
+
+        /**
          * Checks $scope.newBlog.content for validity
          */
         function validContent() {
@@ -51,6 +58,21 @@ angular.module('dc-admin')
         $scope.validBlog = validBlog;
         $scope.validContent = validContent;
 
+        $scope.changeTab = function (mode) {
+            if ($scope.mode === mode) return;
+            if ($scope.mode) {
+                $scope.mode = null;
+                $timeout(function () {
+                    $scope.mode = mode;
+                }, 300);
+            } else {
+                $scope.mode = mode;
+            }
+        };
+
+        /**
+         * Add section to edit form
+         */
         $scope.addSection = function () {
             $scope.newBlog.content.push(angular.copy(emptySection));
         };
@@ -72,6 +94,18 @@ angular.module('dc-admin')
             Admin.createBlog($scope.newBlog).then(reload);
         };
 
+        /**
+         * Create new project
+         */
+        $scope.createProject = function () {
+            console.log($scope.newProj);
+            if (!validProject()) return;
+            Admin.createProject($scope.newProj).then(reload);
+        };
+
+        /**
+         * Edit existing blog
+         */
         $scope.editBlog = function (id) {
             if (!angular.isDefined(id)) return;
 
@@ -84,6 +118,9 @@ angular.module('dc-admin')
                 });
         };
 
+        /**
+         * Delete existing blog
+         */
         $scope.deleteBlog = function (id) {
             if (!angular.isDefined(id)) return;
 

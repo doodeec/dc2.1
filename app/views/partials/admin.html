@@ -1,19 +1,19 @@
 <div class="row">
     <button class="btn btn-default pull-right" ng-click="logout()">Log out</button>
-    <button class="btn btn-default pull-right" ng-click="mode='blog'"
+    <button class="btn btn-default pull-right" ng-click="changeTab('blog')"
             ng-class="{'btn-info': mode=='blog'}">Create Blog
     </button>
-    <button class="btn btn-default pull-right" ng-click="mode='project'"
+    <button class="btn btn-default pull-right" ng-click="changeTab('project')"
             ng-class="{'btn-info': mode=='project'}">Create Project
     </button>
 </div>
 
 <div class="admin-form" ng-class="{shown: mode=='blog'}">
-    <div ng-include="'partials/createBlog'" ng-show="mode=='blog'"></div>
+    <div ng-include="'partials/createBlog'"></div>
 </div>
 
 <div class="admin-form" ng-class="{shown: mode=='project'}">
-    <div ng-include="'partials/createProject'" ng-show="mode=='project'"></div>
+    <div ng-include="'partials/createProject'"></div>
 </div>
 
 <div class="row">
