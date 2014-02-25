@@ -1,19 +1,37 @@
-<div class="row">
-    <form ng-submit="createBlog()" class="col-md-4">
+<div class="create-blog">
+    <form ng-submit="createBlog()">
         <h3>Create new blog</h3>
 
-        <div>
-            <label for="newBlogId">ID</label>
-            <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
-                   placeholder="Unique ID" required>
-            <label for="newBlogTitle">Title</label>
-            <input id="newBlogTitle" type="text" ng-model="newBlog.title" class="form-control"
-                   placeholder="Blog title" required>
-            <label for="newBlogShortDesc">Short Description</label>
-            <input id="newBlogShortDesc" type="text" ng-model="newBlog.shortDesc"
-                   class="form-control" placeholder="Short Description">
-            <label for="newBlogAllowedHome">Allow on home screen</label>
-            <input id="newBlogAllowedHome" type="checkbox" ng-model="newBlog.allowedHome">
+        <div class="form-group">
+            <label for="newBlogId" class="col-md-3">ID</label>
+
+            <div class="col-md-9">
+                <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
+                       placeholder="Unique ID" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newBlogTitle" class="col-md-3">Title</label>
+
+            <div class="col-md-9">
+                <input id="newBlogTitle" type="text" ng-model="newBlog.title" class="form-control"
+                       placeholder="Blog title" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newBlogShortDesc" class="col-md-3">Short Description</label>
+
+            <div class="col-md-9">
+                <input id="newBlogShortDesc" type="text" ng-model="newBlog.shortDesc"
+                       class="form-control" placeholder="Short Description">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newBlogAllowedHome" class="col-md-3">Allow on home screen</label>
+
+            <div class="col-md-9">
+                <input id="newBlogAllowedHome" type="checkbox" ng-model="newBlog.allowedHome">
+            </div>
         </div>
 
         <div ng-repeat="section in newBlog.content">

@@ -1,7 +1,12 @@
 .admin-form
     max-height: 0
     overflow: hidden
-    transition: max-height 5s linear
+    transition: max-height 0.3s linear
 
     &.shown
-        max-height: 1000em
+        max-height: 100em
+        transition: max-height 0.2s ease
+
+.create-project
+    input
+        display: block

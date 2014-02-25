@@ -8,6 +8,7 @@ angular.module('dc-admin')
         $scope.user = Auth.currentUser();
         $scope.text = 'This is admin section';
         $scope.newBlog = {};
+        $scope.newProj = {};
         $scope.blogs = [];
         $scope.mode = null;
 

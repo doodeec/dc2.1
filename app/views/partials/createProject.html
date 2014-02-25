@@ -1,5 +1,55 @@
-<div class="row">
-    <form ng-submit="createProject()" class="col-md-4">
+<div class="create-project">
+    <form ng-submit="createProject()">
         <h3>Create new project</h3>
+
+        <div class="form-group">
+            <label for="newProjId" class="col-md-3">ID</label>
+
+            <div class="col-md-9">
+                <input id="newProjId" type="text" ng-model="newProj.id" class="form-control"
+                       placeholder="Unique ID" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newProjTitle" class="col-md-3">Title</label>
+
+            <div class="col-md-9">
+                <input id="newProjTitle" type="text" ng-model="newProj.title" class="form-control"
+                       placeholder="Project title" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newProjShortDesc" class="col-md-3">Short Description</label>
+
+            <div class="col-md-9">
+                <input id="newProjShortDesc" type="text" ng-model="newProj.shortDesc"
+                       class="form-control" placeholder="Short Description" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newProjDescription" class="col-md-3">Project Description</label>
+
+            <div class="col-md-9">
+                <input id="newProjDescription" type="text" ng-model="newProj.description"
+                       class="form-control" placeholder="Project description">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newProjGithub" class="col-md-3">Github link</label>
+
+            <div class="col-md-9">
+                <input id="newProjGithub" type="text" ng-model="newProj.github"
+                       class="form-control" placeholder="Github link">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newProjUrl" class="col-md-3">Project URL</label>
+
+            <div class="col-md-9">
+                <input id="newProjUrl" type="text" ng-model="newProj.url"
+                       class="form-control" placeholder="Url to project">
+            </div>
+        </div>
+
     </form>
 </div>
