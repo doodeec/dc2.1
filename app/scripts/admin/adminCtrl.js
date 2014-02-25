@@ -54,26 +54,44 @@ angular.module('dc-admin')
             $scope.newBlog.content.push(angular.copy(emptySection));
         };
 
+        /**
+         * Log out and reload route to redirect to login
+         */
         $scope.logout = function () {
             Auth.logout().then($route.reload);
         };
 
+        /**
+         * Create new blog
+         */
         $scope.createBlog = function () {
             console.log($scope.newBlog);
             if (!validBlog()) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
-//            Admin.createBlog($scope.newBlog).then(reload);
+            Admin.createBlog($scope.newBlog).then(reload);
         };
 
         $scope.editBlog = function (id) {
-            /*Admin.editBlog({
-             id: id,
-             date: new Date()
-             }).then(function() {
-             console.log('updated');
-             });*/
+            if (!angular.isDefined(id)) return;
+
+            Admin.editBlog({
+                id: id,
+                date: new Date()
+            }).then(function () {
+                    console.log('updated');
+                    reload();
+                });
         };
 
-        // run
+        $scope.deleteBlog = function (id) {
+            if (!angular.isDefined(id)) return;
+
+            Admin.deleteBlog(id)
+                .then(function () {
+                    console.log('Blog ' + id + ' deleted');
+                    reload();
+                });
+        };
+
         reload();
     });

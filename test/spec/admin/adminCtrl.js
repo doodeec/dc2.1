@@ -10,28 +10,45 @@ describe('Admin:: AdminCtrl', function () {
         scope,
         $httpBackend;
 
-    beforeEach(inject(function (_$httpBackend_, _Admin_, _Auth_, _$route_, $controller, $rootScope) {
-        $httpBackend = _$httpBackend_;
-        AdminService = _Admin_;
-
-        $httpBackend.expectGET('/api/users/me')
-            .respond({name: 'Admin'});
-
+    function expectReload() {
         $httpBackend.expectGET('/api/blogs')
             .respond([
                 {id: 1, title: 'Blog 1'},
                 {id: 5, title: 'Blog 5'}
             ]);
+    }
 
-        //TODO check why is this necessary
+    beforeEach(inject(function ($injector) {
+        var Auth = $injector.get('Auth'),
+            $route = $injector.get('$route'),
+            $controller = $injector.get('$controller'),
+            $rootScope = $injector.get('$rootScope');
+
+        $httpBackend = $injector.get('$httpBackend');
+        AdminService = $injector.get('Admin');
+
+        Auth.login({
+            email: 'admin@doodeec.com',
+            password: 'test'
+        });
+
+        $httpBackend.expectPOST('/api/session')
+            .respond(200);
+
+        $httpBackend.expectGET('/api/users/me')
+            .respond({name: 'Admin'});
+
+        expectReload();
+
+        //TODO why is this firing?
         $httpBackend.expectGET('partials/main')
             .respond(200);
 
         scope = $rootScope.$new();
         AdminCtrl = $controller('AdminCtrl', {
             $scope: scope,
-            $route: _$route_,
-            Auth: _Auth_,
+            $route: $route,
+            Auth: Auth,
             AdminService: AdminService
         });
     }));
@@ -132,6 +149,26 @@ describe('Admin:: AdminCtrl', function () {
         scope.addSection();
         expect(scope.newBlog.content.length).toBe(3);
 
+        $httpBackend.flush();
+    });
+
+    it('should send edit blog request', function () {
+        $httpBackend.flush();
+        $httpBackend.expectPOST('/api/blog/save')
+            .respond(200);
+        expectReload();
+
+        scope.editBlog(2);
+        $httpBackend.flush();
+    });
+
+    it('should send delete blog request', function () {
+        $httpBackend.flush();
+        $httpBackend.expectPOST('/api/blog/delete')
+            .respond(200);
+        expectReload();
+
+        scope.deleteBlog(2);
         $httpBackend.flush();
     });
 });

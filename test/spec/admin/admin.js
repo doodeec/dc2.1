@@ -8,9 +8,9 @@ describe('Admin:: Admin', function () {
     var AdminService,
         $httpBackend;
 
-    beforeEach(inject(function (_$httpBackend_, _Admin_) {
-        AdminService = _Admin_;
-        $httpBackend = _$httpBackend_;
+    beforeEach(inject(function ($injector) {
+        AdminService = $injector.get('Admin');
+        $httpBackend = $injector.get('$httpBackend');
     }));
 
     it('should have all methods defined', function () {
@@ -19,10 +19,12 @@ describe('Admin:: Admin', function () {
         expect(AdminService.createBlog).toBeDefined();
         expect(AdminService.editBlog).toBeDefined();
         expect(AdminService.deleteBlog).toBeDefined();
-        expect(AdminService.unpublishBlog).toBeDefined();
         expect(AdminService.publishBlog).toBeDefined();
+        expect(AdminService.unpublishBlog).toBeDefined();
+        expect(AdminService.loadProject).toBeDefined();
         expect(AdminService.createProject).toBeDefined();
         expect(AdminService.editProject).toBeDefined();
+        expect(AdminService.deleteProject).toBeDefined();
     });
 
     describe('Admin.methods', function () {

@@ -38,15 +38,15 @@ angular.module('dc21App', [
         $httpProvider.interceptors.push(['$q', '$location', 'LoaderService',
             function ($q, $location, LoaderService) {
                 return {
-                'responseError': function (response) {
-                    if (response.status === 401) {
-                        $location.path('/login');
-                        return $q.reject(response);
-                    }
-                    else {
-                        return $q.reject(response);
-                    }
-                },
+                    'responseError': function (response) {
+                        if (response.status === 401) {
+                            $location.path('/login');
+                            return $q.reject(response);
+                        }
+                        else {
+                            return $q.reject(response);
+                        }
+                    },
                     'request': function (config) {
                         LoaderService.register(config.url);
                         return config || $q.when(config);

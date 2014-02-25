@@ -9,9 +9,12 @@ describe('Controller: MainCtrl', function () {
         scope,
         $httpBackend;
 
-    beforeEach(inject(function (_$httpBackend_, _BlogService_, $controller, $rootScope) {
-        $httpBackend = _$httpBackend_;
-        BlogService = _BlogService_;
+    beforeEach(inject(function ($injector) {
+        var $controller = $injector.get('$controller'),
+            $rootScope = $injector.get('$rootScope');
+
+        $httpBackend = $injector.get('$httpBackend');
+        BlogService = $injector.get('BlogService');
 
         $httpBackend.expectGET('/api/blogs/home')
             .respond([
