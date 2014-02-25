@@ -1,40 +1,19 @@
 <div class="row">
-    <button class="btn btn-primary pull-right" ng-click="logout()">Log out</button>
-    <div class="col-sm-12">
-        <h1>Admin section</h1>
-    </div>
-    <div class="col-sm-12">
-        <!--{{ user }}-->
-        {{ text }}
-    </div>
+    <button class="btn btn-default pull-right" ng-click="logout()">Log out</button>
+    <button class="btn btn-default pull-right" ng-click="mode='blog'"
+            ng-class="{'btn-info': mode=='blog'}">Create Blog
+    </button>
+    <button class="btn btn-default pull-right" ng-click="mode='project'"
+            ng-class="{'btn-info': mode=='project'}">Create Project
+    </button>
 </div>
 
-<div class="row">
-    <form ng-submit="createBlog()" class="col-md-4">
-        <h3>Create new blog</h3>
+<div class="admin-form" ng-class="{shown: mode=='blog'}">
+    <div ng-include="'partials/createBlog'" ng-show="mode=='blog'"></div>
+</div>
 
-        <div>
-            <label for="newBlogId">ID</label>
-            <input id="newBlogId" type="text" ng-model="newBlog.id" class="form-control"
-                   placeholder="Unique ID" required>
-            <label for="newBlogTitle">Title</label>
-            <input id="newBlogTitle" type="text" ng-model="newBlog.title" class="form-control"
-                   placeholder="Blog title" required>
-            <label for="newBlogShortDesc">Short Description</label>
-            <input id="newBlogShortDesc" type="text" ng-model="newBlog.shortDesc"
-                   class="form-control" placeholder="Short Description">
-            <label for="newBlogAllowedHome">Allow on home screen</label>
-            <input id="newBlogAllowedHome" type="checkbox" ng-model="newBlog.allowedHome">
-        </div>
-
-        <div ng-repeat="section in newBlog.content">
-            <input type="text" ng-model="section.header" class="form-control" placeholder="header">
-            <input type="text" ng-model="section.text" class="form-control" placeholder="text">
-        </div>
-
-        <button class="btn btn-default" ng-click="addSection()">Add section</button>
-        <button type="submit" class="btn btn-info" ng-disabled="!validBlog()">Create blog</button>
-    </form>
+<div class="admin-form" ng-class="{shown: mode=='project'}">
+    <div ng-include="'partials/createProject'" ng-show="mode=='project'"></div>
 </div>
 
 <div class="row">

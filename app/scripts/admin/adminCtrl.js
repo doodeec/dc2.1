@@ -9,6 +9,7 @@ angular.module('dc-admin')
         $scope.text = 'This is admin section';
         $scope.newBlog = {};
         $scope.blogs = [];
+        $scope.mode = null;
 
         $scope.newBlog.content = [angular.copy(emptySection)];
 
