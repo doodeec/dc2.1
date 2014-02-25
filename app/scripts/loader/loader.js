@@ -15,7 +15,7 @@ angular.module('dc-loader', [])
              * @returns {Number}
              */
             activeLoader: function () {
-                return loaderTasks.length;
+                return Boolean(loaderTasks.length);
             },
             /**
              * Register defered task for showing a Loader
