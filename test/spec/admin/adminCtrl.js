@@ -142,6 +142,15 @@ describe('Admin:: AdminCtrl', function () {
         $httpBackend.flush();
     });
 
+    it('should clear blog form and turn off edit mode', function () {
+        $httpBackend.flush();
+        scope.editMode = true;
+        scope.newBlog = { id: 2 };
+        scope.closeEditMode();
+        expect(scope.editMode).toBe(false);
+        expect(scope.newBlog.id).toBeUndefined();
+    });
+
     it('should add sections', function () {
         expect(scope.newBlog.content.length).toBe(1);
         scope.addSection();
@@ -152,11 +161,48 @@ describe('Admin:: AdminCtrl', function () {
         $httpBackend.flush();
     });
 
+    it('should send create blog request', function () {
+        $httpBackend.flush();
+        $httpBackend.expectPOST('/api/blog/create')
+            .respond(200);
+        expectReload();
+
+        scope.newBlog = { id: 123, title: 'Title 123', content: [
+            { text: 'Abcd' }
+        ] };
+        scope.saveBlog();
+        $httpBackend.flush();
+    });
+
     it('should send edit blog request', function () {
         $httpBackend.flush();
         $httpBackend.expectPOST('/api/blog/save')
             .respond(200);
         expectReload();
+
+        scope.editMode = true;
+        scope.newBlog = { id: 123, title: 'Title 123', content: [
+            { text: 'Abcd' }
+        ] };
+        scope.saveBlog();
+        $httpBackend.flush();
+    });
+
+    it('should not any request', function () {
+        $httpBackend.flush();
+
+        scope.newBlog = { id: 123, title: 'Title 123' };
+        scope.saveBlog();
+
+        scope.editMode = true;
+        scope.newBlog = { id: 123, title: 'Title 123' };
+        scope.saveBlog();
+    });
+
+    it('should send request blog', function () {
+        $httpBackend.flush();
+        $httpBackend.expectGET('/api/blog?id=2')
+            .respond({ id: 2 });
 
         scope.editBlog(2);
         $httpBackend.flush();

@@ -7,12 +7,20 @@ angular.module('dc-admin')
 
         $scope.user = Auth.currentUser();
         $scope.text = 'This is admin section';
-        $scope.newBlog = {};
         $scope.newProj = {};
         $scope.blogs = [];
         $scope.mode = null;
+        $scope.editMode = false;
 
-        $scope.newBlog.content = [angular.copy(emptySection)];
+        clearBlog();
+
+        /**
+         * Clears blog form
+         */
+        function clearBlog() {
+            $scope.newBlog = {};
+            $scope.newBlog.content = [angular.copy(emptySection)];
+        }
 
         /**
          * Reloads Blog list
@@ -20,6 +28,8 @@ angular.module('dc-admin')
         function reload() {
             Admin.loadAllBlogs().then(function (blogs) {
                 $scope.blogs = blogs.data;
+                $scope.editMode = false;
+                clearBlog();
             });
         }
 
@@ -55,10 +65,10 @@ angular.module('dc-admin')
             return valid;
         }
 
-        $scope.validBlog = validBlog;
-        $scope.validContent = validContent;
-
-        $scope.changeTab = function (mode) {
+        /**
+         * Changing tabs (creating blog/project)
+         */
+        function changeTab(mode) {
             if ($scope.mode === mode) return;
             if ($scope.mode) {
                 $scope.mode = null;
@@ -68,6 +78,38 @@ angular.module('dc-admin')
             } else {
                 $scope.mode = mode;
             }
+        }
+
+        /**
+         * Create new blog
+         */
+        function createBlog() {
+            console.log($scope.newBlog);
+            if (!validBlog()) return;
+            $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
+            Admin.createBlog($scope.newBlog).then(reload);
+        }
+
+        /**
+         * Update blog
+         */
+        function updateBlog() {
+            console.log($scope.newBlog);
+            if (!validBlog()) return;
+            $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
+            Admin.editBlog($scope.newBlog).then(reload);
+        }
+
+        $scope.validBlog = validBlog;
+        $scope.validContent = validContent;
+        $scope.changeTab = changeTab;
+
+        /**
+         * Closing edit mode, clears blog form
+         */
+        $scope.closeEditMode = function () {
+            $scope.editMode = false;
+            clearBlog();
         };
 
         /**
@@ -84,14 +126,8 @@ angular.module('dc-admin')
             Auth.logout().then($route.reload);
         };
 
-        /**
-         * Create new blog
-         */
-        $scope.createBlog = function () {
-            console.log($scope.newBlog);
-            if (!validBlog()) return;
-            $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
-            Admin.createBlog($scope.newBlog).then(reload);
+        $scope.saveBlog = function () {
+            $scope.editMode ? updateBlog() : createBlog();
         };
 
         /**
@@ -109,13 +145,13 @@ angular.module('dc-admin')
         $scope.editBlog = function (id) {
             if (!angular.isDefined(id)) return;
 
-            Admin.editBlog({
-                id: id,
-                date: new Date()
-            }).then(function () {
-                    console.log('updated');
-                    reload();
-                });
+            $scope.editMode = true;
+            Admin.loadBlog(id).then(function (blog) {
+                changeTab('blog');
+                $scope.newBlog = blog.data;
+                if ($scope.newBlog['_id']) delete $scope.newBlog['_id'];
+                if ($scope.newBlog['_v']) delete $scope.newBlog['_v'];
+            });
         };
 
         /**
