@@ -19,8 +19,8 @@
 <div class="well">
     <div class="alert alert-info" ng-if="loadingBlogs">Loading blogs...</div>
     <ul class="list-group">
-        <li ng-repeat="b in blogs" class="list-group-item">
-            {{ b.title }} (id: {{ b.id }})
+        <li ng-repeat="b in blogs" class="list-group-item clearfix">
+            <div class="pull-left">{{ b.title }} (id: {{ b.id }})</div>
             <div class="pull-right">
                 <button class="btn btn-sm btn-info" ng-click="editBlog(b.id)">Edit</button>
                 <button class="btn btn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>

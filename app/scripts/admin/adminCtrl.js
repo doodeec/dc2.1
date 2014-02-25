@@ -7,12 +7,13 @@ angular.module('dc-admin')
 
         $scope.user = Auth.currentUser();
         $scope.text = 'This is admin section';
-        $scope.newProj = {};
         $scope.blogs = [];
+        $scope.projects = [];
         $scope.mode = null;
         $scope.editMode = false;
 
         clearBlog();
+        clearProject();
 
         /**
          * Clears blog form
@@ -23,9 +24,16 @@ angular.module('dc-admin')
         }
 
         /**
+         * Clears project form
+         */
+        function clearProject() {
+            $scope.newProj = {};
+        }
+
+        /**
          * Reloads Blog list
          */
-        function reload() {
+        function reloadBlogs() {
             $scope.loadingBlogs = true;
             Admin.loadAllBlogs().then(function (blogs) {
                 $scope.blogs = blogs.data;
@@ -34,6 +42,21 @@ angular.module('dc-admin')
                 $scope.loadingBlogs = false;
             }, function () {
                 $scope.loadingBlogs = false;
+            });
+        }
+
+        /**
+         * Reloads Project list
+         */
+        function reloadProjects() {
+            $scope.loadingProjects = true;
+            Admin.loadAllProjects().then(function (projects) {
+                $scope.projects = projects.data;
+                $scope.editMode = false;
+                clearProject();
+                $scope.loadingProjects = false;
+            }, function () {
+                $scope.loadingProjects = false;
             });
         }
 
@@ -50,7 +73,9 @@ angular.module('dc-admin')
          * Checks if project has id, title and any content
          */
         function validProject() {
-            return false;
+            return Boolean($scope.newProj.id && $scope.newProj.title &&
+                ($scope.newProj.shortDesc || $scope.newProj.description)
+            );
         }
 
         /**
@@ -91,7 +116,7 @@ angular.module('dc-admin')
             console.log($scope.newBlog);
             if (!validBlog()) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
-            Admin.createBlog($scope.newBlog).then(reload);
+            Admin.createBlog($scope.newBlog).then(reloadBlogs);
         }
 
         /**
@@ -101,11 +126,12 @@ angular.module('dc-admin')
             console.log($scope.newBlog);
             if (!validBlog()) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
-            Admin.editBlog($scope.newBlog).then(reload);
+            Admin.editBlog($scope.newBlog).then(reloadBlogs);
         }
 
         $scope.validBlog = validBlog;
         $scope.validContent = validContent;
+        $scope.validProject = validProject;
         $scope.changeTab = changeTab;
 
         /**
@@ -140,7 +166,7 @@ angular.module('dc-admin')
         $scope.createProject = function () {
             console.log($scope.newProj);
             if (!validProject()) return;
-            Admin.createProject($scope.newProj).then(reload);
+            Admin.createProject($scope.newProj).then(reloadBlogs);
         };
 
         /**
@@ -170,9 +196,10 @@ angular.module('dc-admin')
             Admin.deleteBlog(id)
                 .then(function () {
                     console.log('Blog ' + id + ' deleted');
-                    reload();
+                    reloadBlogs();
                 });
         };
 
-        reload();
+        reloadBlogs();
+        reloadProjects();
     });

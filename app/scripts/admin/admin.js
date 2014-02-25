@@ -71,6 +71,13 @@ angular.module('dc-admin', ['dc-loader'])
                 return this.editBlog({id: id, allowedHome: false});
             },
             /**
+             * Loads all projects
+             * @returns {Object} $http promise
+             */
+            loadAllProjects: function () {
+                return $http.get('/api/projects');
+            },
+            /**
              * Loads project with specific id
              * @param {String} id
              * @returns {Object} $http promise

@@ -10,11 +10,19 @@ describe('Admin:: AdminCtrl', function () {
         scope,
         $httpBackend;
 
-    function expectReload() {
+    function expectBlogsReload() {
         $httpBackend.expectGET('/api/blogs')
             .respond([
                 {id: 1, title: 'Blog 1'},
                 {id: 5, title: 'Blog 5'}
+            ]);
+    }
+
+    function expectProjectsReload() {
+        $httpBackend.expectGET('/api/projects')
+            .respond([
+                { id: 1 },
+                { id: 5 }
             ]);
     }
 
@@ -38,7 +46,8 @@ describe('Admin:: AdminCtrl', function () {
         $httpBackend.expectGET('/api/users/me')
             .respond({name: 'Admin'});
 
-        expectReload();
+        expectBlogsReload();
+        expectProjectsReload();
 
         //TODO why is this firing?
         $httpBackend.expectGET('partials/main')
@@ -165,7 +174,7 @@ describe('Admin:: AdminCtrl', function () {
         $httpBackend.flush();
         $httpBackend.expectPOST('/api/blog/create')
             .respond(200);
-        expectReload();
+        expectBlogsReload();
 
         scope.newBlog = { id: 123, title: 'Title 123', content: [
             { text: 'Abcd' }
@@ -178,7 +187,7 @@ describe('Admin:: AdminCtrl', function () {
         $httpBackend.flush();
         $httpBackend.expectPOST('/api/blog/save')
             .respond(200);
-        expectReload();
+        expectBlogsReload();
 
         scope.editMode = true;
         scope.newBlog = { id: 123, title: 'Title 123', content: [
@@ -212,9 +221,11 @@ describe('Admin:: AdminCtrl', function () {
         $httpBackend.flush();
         $httpBackend.expectPOST('/api/blog/delete')
             .respond(200);
-        expectReload();
+        expectBlogsReload();
 
         scope.deleteBlog(2);
         $httpBackend.flush();
     });
+
+    //TODO project requests
 });

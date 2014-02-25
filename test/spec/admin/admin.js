@@ -21,6 +21,7 @@ describe('Admin:: Admin', function () {
         expect(AdminService.deleteBlog).toBeDefined();
         expect(AdminService.publishBlog).toBeDefined();
         expect(AdminService.unpublishBlog).toBeDefined();
+        expect(AdminService.loadAllProjects).toBeDefined();
         expect(AdminService.loadProject).toBeDefined();
         expect(AdminService.createProject).toBeDefined();
         expect(AdminService.editProject).toBeDefined();
@@ -134,6 +135,25 @@ describe('Admin:: Admin', function () {
                 AdminService.unpublishBlog(12).then(function (response) {
                     expect(response).toBeDefined();
                     expect(response.status).toBe(200);
+                });
+            });
+        });
+
+        describe('method:: loadAllProjects', function () {
+            beforeEach(function () {
+                $httpBackend.expectGET('/api/projects')
+                    .respond([
+                        { id: 2 },
+                        { id: 3 },
+                        { id: 5 }
+                    ]);
+            });
+
+            it('should load 3 projects', function () {
+                AdminService.loadAllProjects().then(function (response) {
+                    console.log(response);
+                    expect(response.data).toBeDefined();
+                    expect(response.data.length).toBe(3);
                 });
             });
         });
