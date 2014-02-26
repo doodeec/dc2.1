@@ -1,29 +1,67 @@
 'use strict';
 
 angular.module('dc-admin', ['dc-loader'])
-    .factory('Admin', function ($http) {
+    .factory('Admin', function ($http, $q) {
         var errorStrings = {
             misProjId: 'Missing project id',
             misBlogId: 'Missing blog id',
             typeError: 'Wrong parameter type'
         };
 
+        var localCache = {};
+
+        function checkLocalCache(key) {
+            return (key in localCache) ? { status: 200, data: localCache[key] } : false;
+        }
+
+        function storeCache(key, data) {
+            if (!angular.isDefined(data.data)) return;
+
+            if (angular.isArray(data.data)) {
+                var i = 0, len = data.data.length, item;
+                for (; i < len, item = data.data[i]; i++) {
+                    localCache[key + item.id] = item;
+                }
+            } else {
+                localCache[key] = data;
+            }
+        }
+
         return {
             /**
              * Loads blog with defined id
              * @param {String} id
-             * @returns {Object} $http promise
+             * @returns {Object} promise
              */
             loadBlog: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misBlogId);
-                return $http.get('/api/blog', {params: {id: id}});
+                var defer = $q.defer(),
+                    cache = checkLocalCache('blog.' + id);
+
+                if (cache) {
+                    defer.resolve(cache);
+                } else {
+                    $http.get('/api/blog', {params: {id: id}}).then(function (data) {
+                        storeCache('blog.' + id, data);
+                        defer.resolve(data);
+                    }, defer.reject);
+                }
+
+                return defer.promise;
             },
             /**
              * Loads all blogs
-             * @returns {Object} $http promise
+             * @returns {Object} promise
              */
             loadAllBlogs: function () {
-                return $http.get('/api/blogs');
+                var defer = $q.defer();
+
+                $http.get('/api/blogs').then(function (data) {
+                    storeCache('blog.', data);
+                    defer.resolve(data);
+                }, defer.reject);
+
+                return defer.promise;
             },
             /**
              * Creates new blog
@@ -75,7 +113,14 @@ angular.module('dc-admin', ['dc-loader'])
              * @returns {Object} $http promise
              */
             loadAllProjects: function () {
-                return $http.get('/api/projects');
+                var defer = $q.defer();
+
+                $http.get('/api/projects').then(function (data) {
+                    storeCache('project.', data);
+                    defer.resolve(data);
+                }, defer.reject);
+
+                return defer.promise;
             },
             /**
              * Loads project with specific id
@@ -84,7 +129,19 @@ angular.module('dc-admin', ['dc-loader'])
              */
             loadProject: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misProjId);
-                return $http.get('/api/project', {params: {id: id}});
+                var defer = $q.defer(),
+                    cache = checkLocalCache('project.' + id);
+
+                if (cache) {
+                    defer.resolve(cache);
+                } else {
+                    $http.get('/api/project', {params: {id: id}}).then(function (data) {
+                        storeCache('project.' + id, data);
+                        defer.resolve(data);
+                    }, defer.reject);
+                }
+
+                return defer.promise;
             },
             /**
              * Creates new project

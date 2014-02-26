@@ -26,7 +26,7 @@ angular.module('dc21App', [
             .when('/admin', {
                 templateUrl: 'partials/admin',
                 controller: 'AdminCtrl',
-                authenticate: true
+//                authenticate: true
             })
             .otherwise({
                 redirectTo: '/'

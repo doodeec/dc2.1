@@ -157,6 +157,7 @@ describe('Admin:: AdminCtrl', function () {
 
         it('should clear blog form and turn off edit mode', function () {
             $httpBackend.flush();
+            scope.mode = 'blog';
             scope.editMode = true;
             scope.newBlog = { id: 2 };
             scope.closeEditMode();
@@ -284,6 +285,16 @@ describe('Admin:: AdminCtrl', function () {
             }, 300);
 
             $httpBackend.flush();
+        });
+
+        it('should clear project form and turn off edit mode', function () {
+            $httpBackend.flush();
+            scope.mode = 'project';
+            scope.editMode = true;
+            scope.newProj = { id: 2 };
+            scope.closeEditMode();
+            expect(scope.editMode).toBe(false);
+            expect(scope.newProj.id).toBeUndefined();
         });
 
         it('should send create project request', function () {

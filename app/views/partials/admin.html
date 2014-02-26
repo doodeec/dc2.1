@@ -28,3 +28,17 @@
         </li>
     </ul>
 </div>
+
+<div class="well">
+    <div class="alert alert-info" ng-if="loadingProjects">Loading projects...</div>
+    <ul class="list-group">
+        <li ng-repeat="p in projects" class="list-group-item clearfix">
+            <div class="pull-left">{{ p.title }} (id: {{ p.id }})</div>
+            {{ p }}
+            <div class="pull-right">
+                <button class="btn btn-sm btn-info" ng-click="editProject(p.id)">Edit</button>
+                <button class="btn btn-sm btn-danger" ng-click="deleteProject(p.id)">Delete</button>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -2,7 +2,6 @@
 
 angular.module('dc-admin')
     .controller('AdminCtrl', function ($scope, $route, $timeout, Auth, Admin, LoaderService) {
-
         var emptySection = { header: null, text: null };
 
         $scope.user = Auth.currentUser();
@@ -11,9 +10,6 @@ angular.module('dc-admin')
         $scope.projects = [];
         $scope.mode = null;
         $scope.editMode = false;
-
-        clearBlog();
-        clearProject();
 
         /**
          * Clears blog form
@@ -139,7 +135,12 @@ angular.module('dc-admin')
          */
         $scope.closeEditMode = function () {
             $scope.editMode = false;
-            clearBlog();
+            if ($scope.mode === 'project') {
+                clearProject();
+            } else if ($scope.mode === 'blog') {
+                clearBlog();
+            }
+            $scope.mode = null;
         };
 
         /**
@@ -158,15 +159,6 @@ angular.module('dc-admin')
 
         $scope.saveBlog = function () {
             $scope.editMode ? updateBlog() : createBlog();
-        };
-
-        /**
-         * Create new project
-         */
-        $scope.createProject = function () {
-            console.log($scope.newProj);
-            if (!validProject()) return;
-            Admin.createProject($scope.newProj).then(reloadBlogs);
         };
 
         /**
@@ -193,12 +185,44 @@ angular.module('dc-admin')
         $scope.deleteBlog = function (id) {
             if (!angular.isDefined(id)) return;
 
-            Admin.deleteBlog(id)
-                .then(function () {
-                    console.log('Blog ' + id + ' deleted');
-                    reloadBlogs();
-                });
+            Admin.deleteBlog(id).then(reloadBlogs);
         };
+
+        /**
+         * Create new project
+         */
+        $scope.createProject = function () {
+            console.log($scope.newProj);
+            if (!validProject()) return;
+            Admin.createProject($scope.newProj).then(reloadBlogs);
+        };
+
+        /**
+         * Copy project into project form, turn on edit mode
+         */
+        $scope.editProject = function (id) {
+            if (!angular.isDefined(id)) return;
+
+            LoaderService.register('loading-project', 0);
+            Admin.loadProject(id).then(function (project) {
+                changeTab('project');
+                $scope.editMode = true;
+                $scope.newProj = project.data;
+
+                LoaderService.unregister('loading-project');
+                if ($scope.newProj['_id']) delete $scope.newProj['_id'];
+                if ($scope.newProj['_v']) delete $scope.newProj['_v'];
+            });
+        };
+
+        $scope.deleteProject = function (id) {
+            if (!angular.isDefined(id)) return;
+
+            Admin.deleteProject(id).then(reloadBlogs);
+        };
+
+        clearBlog();
+        clearProject();
 
         reloadBlogs();
         reloadProjects();
