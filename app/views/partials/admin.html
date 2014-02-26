@@ -16,29 +16,42 @@
     <div ng-include="'partials/createProject'"></div>
 </div>
 
-<div class="well">
-    <div class="alert alert-info" ng-if="loadingBlogs">Loading blogs...</div>
-    <ul class="list-group">
-        <li ng-repeat="b in blogs" class="list-group-item clearfix">
-            <div class="pull-left">{{ b.title }} (id: {{ b.id }})</div>
-            <div class="pull-right">
-                <button class="btn btn-sm btn-info" ng-click="editBlog(b.id)">Edit</button>
-                <button class="btn btn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>
-            </div>
-        </li>
-    </ul>
-</div>
+<div class="well clearfix">
+    <div class="col-md-6">
+        <div class="alert alert-info" ng-if="loadingBlogs">Loading blogs...</div>
+        <ul>
+            <li ng-repeat="b in blogs" class="list-group-item clearfix">
+                <div class="pull-left">{{ b.title }} (id: {{ b.id }})</div>
+                <div class="pull-right">
+                    <button class="btn btn-sm btn-info" ng-click="editBlog(b.id)">Edit</button>
+                    <button class="btn btn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>
+                </div>
+            </li>
+        </ul>
+    </div>
 
-<div class="well">
-    <div class="alert alert-info" ng-if="loadingProjects">Loading projects...</div>
-    <ul class="list-group">
-        <li ng-repeat="p in projects" class="list-group-item clearfix">
-            <div class="pull-left">{{ p.title }} (id: {{ p.id }})</div>
-            {{ p }}
-            <div class="pull-right">
-                <button class="btn btn-sm btn-info" ng-click="editProject(p.id)">Edit</button>
-                <button class="btn btn-sm btn-danger" ng-click="deleteProject(p.id)">Delete</button>
-            </div>
-        </li>
-    </ul>
+    <div class="col-md-6">
+        <div class="alert alert-info" ng-if="loadingProjects">Loading projects...</div>
+        <ul>
+            <li ng-repeat="p in projects" class="list-group-item clearfix">
+                <div class="clearfix">
+                    <div class="pull-left">{{ p.title }} (id: {{ p.id }})</div>
+
+                    <div class="pull-right">
+                        <button class="btn btn-sm btn-default" ng-click="showDetail=!showDetail"
+                                ng-class="{'btn-info': !showDetail}">Detail
+                        </button>
+                        <button class="btn btn-sm btn-info" ng-click="showDetail=false;editProject(p.id)">Edit</button>
+                        <button class="btn btn-sm btn-danger" ng-click="deleteProject(p.id)">Delete</button>
+                    </div>
+                </div>
+
+                <div ng-if="showDetail">
+                    <h4>{{ p.shortDesc }}</h4>
+
+                    <p>{{ p.description }}</p>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
