@@ -8,7 +8,8 @@ describe('Admin:: AdminCtrl', function () {
     var AdminCtrl,
         AdminService,
         scope,
-        $httpBackend;
+        $httpBackend,
+        $timeout;
 
     function expectBlogsReload() {
         $httpBackend.expectGET('/api/blogs')
@@ -32,6 +33,7 @@ describe('Admin:: AdminCtrl', function () {
             $controller = $injector.get('$controller'),
             $rootScope = $injector.get('$rootScope');
 
+        $timeout = $injector.get('$timeout');
         $httpBackend = $injector.get('$httpBackend');
         AdminService = $injector.get('Admin');
 
@@ -57,6 +59,7 @@ describe('Admin:: AdminCtrl', function () {
         AdminCtrl = $controller('AdminCtrl', {
             $scope: scope,
             $route: $route,
+            $timeout: $timeout,
             Auth: Auth,
             AdminService: AdminService
         });
@@ -76,156 +79,215 @@ describe('Admin:: AdminCtrl', function () {
         expect(scope.blogs.length).toBe(2);
     });
 
-    it('should validate blog', function () {
-        scope.newBlog = { id: 123, title: 'Title 123', content: [
-            { text: 'Abcd' }
-        ] };
-        expect(scope.validBlog()).toBe(true);
+    describe('adminCtrl:: blog', function () {
+        it('should validate blog', function () {
+            scope.newBlog = { id: 123, title: 'Title 123', content: [
+                { text: 'Abcd' }
+            ] };
+            expect(scope.validBlog()).toBe(true);
 
-        scope.newBlog = { id: 123, title: 'Title 123', shortDesc: 'short desc' };
-        expect(scope.validBlog()).toBe(true);
+            scope.newBlog = { id: 123, title: 'Title 123', shortDesc: 'short desc' };
+            expect(scope.validBlog()).toBe(true);
 
-        $httpBackend.flush();
+            $httpBackend.flush();
+        });
+
+        it('should not validate blog', function () {
+            scope.newBlog = { id: 123, title: 'Title 123', content: [
+                { text: null }
+            ] };
+            expect(scope.validBlog()).toBe(false);
+
+            scope.newBlog = { id: 123, title: null, content: [
+                { text: 'Abcd' }
+            ] };
+            expect(scope.validBlog()).toBe(false);
+
+            scope.newBlog = { id: null, title: 'Title 123', content: [
+                { text: 'Abcd' }
+            ] };
+            expect(scope.validBlog()).toBe(false);
+
+            $httpBackend.flush();
+        });
+
+        it('should validate content', function () {
+            scope.newBlog = { content: [
+                { text: 'Text 1' }
+            ] };
+            expect(scope.validContent()).toBe(true);
+
+            scope.newBlog = { content: [
+                { text: 'Text 1' },
+                { text: 'Text 2' }
+            ] };
+            expect(scope.validContent()).toBe(true);
+
+            scope.newBlog = { content: [
+                { text: 'Text 1' },
+                { text: 'Text 2' },
+                { text: 'Text 3' }
+            ] };
+            expect(scope.validContent()).toBe(true);
+
+            $httpBackend.flush();
+        });
+
+        it('should not validate content', function () {
+            scope.newBlog = { content: [
+                { text: null }
+            ] };
+            expect(scope.validContent()).toBe(false);
+
+            scope.newBlog = { content: [
+                { text: null },
+                { text: 'Text 2' }
+            ] };
+            expect(scope.validContent()).toBe(false);
+
+            scope.newBlog = { content: [
+                { text: 'Text 1' },
+                { text: null },
+                { text: 'Text 3' }
+            ] };
+            expect(scope.validContent()).toBe(false);
+
+            $httpBackend.flush();
+        });
+
+        it('should clear blog form and turn off edit mode', function () {
+            $httpBackend.flush();
+            scope.editMode = true;
+            scope.newBlog = { id: 2 };
+            scope.closeEditMode();
+            expect(scope.editMode).toBe(false);
+            expect(scope.newBlog.id).toBeUndefined();
+        });
+
+        it('should add sections to blog form', function () {
+            expect(scope.newBlog.content.length).toBe(1);
+            scope.addSection();
+            expect(scope.newBlog.content.length).toBe(2);
+            scope.addSection();
+            expect(scope.newBlog.content.length).toBe(3);
+
+            $httpBackend.flush();
+        });
+
+        it('should send create blog request', function () {
+            $httpBackend.flush();
+            $httpBackend.expectPOST('/api/blog/create')
+                .respond(200);
+            expectBlogsReload();
+
+            scope.newBlog = { id: 123, title: 'Title 123', content: [
+                { text: 'Abcd' }
+            ] };
+            scope.saveBlog();
+            $httpBackend.flush();
+        });
+
+        it('should send edit blog request', function () {
+            $httpBackend.flush();
+            $httpBackend.expectPOST('/api/blog/save')
+                .respond(200);
+            expectBlogsReload();
+
+            scope.editMode = true;
+            scope.newBlog = { id: 123, title: 'Title 123', content: [
+                { text: 'Abcd' }
+            ] };
+            scope.saveBlog();
+            $httpBackend.flush();
+        });
+
+        it('should not make any request', function () {
+            $httpBackend.flush();
+
+            scope.newBlog = { id: 123, title: 'Title 123' };
+            scope.saveBlog();
+
+            scope.editMode = true;
+            scope.newBlog = { id: 123, title: 'Title 123' };
+            scope.saveBlog();
+        });
+
+        it('should send blog request', function () {
+            $httpBackend.flush();
+            $httpBackend.expectGET('/api/blog?id=2')
+                .respond({ id: 2 });
+
+            scope.editBlog(2);
+            $httpBackend.flush();
+        });
+
+        it('should send delete blog request', function () {
+            $httpBackend.flush();
+            $httpBackend.expectPOST('/api/blog/delete')
+                .respond(200);
+            expectBlogsReload();
+
+            scope.deleteBlog(2);
+            $httpBackend.flush();
+        });
     });
 
-    it('should not validate blog', function () {
-        scope.newBlog = { id: 123, title: 'Title 123', content: [
-            { text: null }
-        ] };
-        expect(scope.validBlog()).toBe(false);
+    describe('adminCtrl:: project', function () {
+        it('should load projects', function () {
+            $httpBackend.flush();
+        });
 
-        scope.newBlog = { id: 123, title: null, content: [
-            { text: 'Abcd' }
-        ] };
-        expect(scope.validBlog()).toBe(false);
+        it('should validate project', function () {
+            scope.newProj = { id: 123, title: 'Title 123', shortDesc: 'project 123' };
+            expect(scope.validProject()).toBe(true);
 
-        scope.newBlog = { id: null, title: 'Title 123', content: [
-            { text: 'Abcd' }
-        ] };
-        expect(scope.validBlog()).toBe(false);
+            scope.newProj = { id: 123, title: 'Title 123', description: 'project 123' };
+            expect(scope.validProject()).toBe(true);
 
-        $httpBackend.flush();
+            $httpBackend.flush();
+        });
+
+        it('should not validate project', function () {
+            scope.newProj = { id: 123, title: 'Title 123' };
+            expect(scope.validProject()).toBe(false);
+
+            scope.newProj = { id: 123, title: 'Title 123', description: null };
+            expect(scope.validProject()).toBe(false);
+
+            scope.newProj = { id: 123, description: 'project 123' };
+            expect(scope.validProject()).toBe(false);
+
+            scope.newProj = { title: 'Title 123' };
+            expect(scope.validProject()).toBe(false);
+
+            scope.newProj = { id: null, title: 'Title 123', description: 'project 123' };
+            expect(scope.validProject()).toBe(false);
+
+            $httpBackend.flush();
+        });
+
+        it('should change the tab', function () {
+            expect(scope.mode).toBe(null);
+            scope.changeTab('project')
+            expect(scope.mode).toBe('project');
+
+            $httpBackend.flush();
+        });
+
+        it('should not change the tab right away', function () {
+            scope.changeTab('project');
+            expect(scope.mode).toBe('project');
+            scope.changeTab('blog');
+            expect(scope.mode).toBe(null);
+            $timeout(function () {
+                expect(scope.mode).toBe('blog');
+            }, 300);
+
+            $httpBackend.flush();
+        });
+
+        it('should send create project request', function () {
+            $httpBackend.flush();
+        });
     });
-
-    it('should validate content', function () {
-        scope.newBlog = { content: [
-            { text: 'Text 1' }
-        ] };
-        expect(scope.validContent()).toBe(true);
-
-        scope.newBlog = { content: [
-            { text: 'Text 1' },
-            { text: 'Text 2' }
-        ] };
-        expect(scope.validContent()).toBe(true);
-
-        scope.newBlog = { content: [
-            { text: 'Text 1' },
-            { text: 'Text 2' },
-            { text: 'Text 3' }
-        ] };
-        expect(scope.validContent()).toBe(true);
-
-        $httpBackend.flush();
-    });
-
-    it('should not validate content', function () {
-        scope.newBlog = { content: [
-            { text: null }
-        ] };
-        expect(scope.validContent()).toBe(false);
-
-        scope.newBlog = { content: [
-            { text: null },
-            { text: 'Text 2' }
-        ] };
-        expect(scope.validContent()).toBe(false);
-
-        scope.newBlog = { content: [
-            { text: 'Text 1' },
-            { text: null },
-            { text: 'Text 3' }
-        ] };
-        expect(scope.validContent()).toBe(false);
-
-        $httpBackend.flush();
-    });
-
-    it('should clear blog form and turn off edit mode', function () {
-        $httpBackend.flush();
-        scope.editMode = true;
-        scope.newBlog = { id: 2 };
-        scope.closeEditMode();
-        expect(scope.editMode).toBe(false);
-        expect(scope.newBlog.id).toBeUndefined();
-    });
-
-    it('should add sections', function () {
-        expect(scope.newBlog.content.length).toBe(1);
-        scope.addSection();
-        expect(scope.newBlog.content.length).toBe(2);
-        scope.addSection();
-        expect(scope.newBlog.content.length).toBe(3);
-
-        $httpBackend.flush();
-    });
-
-    it('should send create blog request', function () {
-        $httpBackend.flush();
-        $httpBackend.expectPOST('/api/blog/create')
-            .respond(200);
-        expectBlogsReload();
-
-        scope.newBlog = { id: 123, title: 'Title 123', content: [
-            { text: 'Abcd' }
-        ] };
-        scope.saveBlog();
-        $httpBackend.flush();
-    });
-
-    it('should send edit blog request', function () {
-        $httpBackend.flush();
-        $httpBackend.expectPOST('/api/blog/save')
-            .respond(200);
-        expectBlogsReload();
-
-        scope.editMode = true;
-        scope.newBlog = { id: 123, title: 'Title 123', content: [
-            { text: 'Abcd' }
-        ] };
-        scope.saveBlog();
-        $httpBackend.flush();
-    });
-
-    it('should not any request', function () {
-        $httpBackend.flush();
-
-        scope.newBlog = { id: 123, title: 'Title 123' };
-        scope.saveBlog();
-
-        scope.editMode = true;
-        scope.newBlog = { id: 123, title: 'Title 123' };
-        scope.saveBlog();
-    });
-
-    it('should send request blog', function () {
-        $httpBackend.flush();
-        $httpBackend.expectGET('/api/blog?id=2')
-            .respond({ id: 2 });
-
-        scope.editBlog(2);
-        $httpBackend.flush();
-    });
-
-    it('should send delete blog request', function () {
-        $httpBackend.flush();
-        $httpBackend.expectPOST('/api/blog/delete')
-            .respond(200);
-        expectBlogsReload();
-
-        scope.deleteBlog(2);
-        $httpBackend.flush();
-    });
-
-    //TODO project requests
 });
