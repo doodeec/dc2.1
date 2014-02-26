@@ -1,10 +1,10 @@
-<div class="row">
-    <button class="btn btn-default pull-right" ng-click="logout()">Log out</button>
-    <button class="btn btn-default pull-right" ng-click="changeTab('blog')"
-            ng-class="{'btn-info': mode=='blog'}">Create Blog
+<div class="row admin-buttons">
+    <button class="bttn bttn-default pull-right" ng-click="logout()">Log out</button>
+    <button class="bttn bttn-default pull-right" ng-click="changeTab('blog')"
+            ng-class="{'bttn-info': mode=='blog'}">Create Blog
     </button>
-    <button class="btn btn-default pull-right" ng-click="changeTab('project')"
-            ng-class="{'btn-info': mode=='project'}">Create Project
+    <button class="bttn bttn-default pull-right" ng-click="changeTab('project')"
+            ng-class="{'bttn-info': mode=='project'}">Create Project
     </button>
 </div>
 
@@ -23,8 +23,8 @@
             <li ng-repeat="b in blogs" class="list-group-item clearfix">
                 <div class="pull-left">{{ b.title }} (id: {{ b.id }})</div>
                 <div class="pull-right">
-                    <button class="btn btn-sm btn-info" ng-click="editBlog(b.id)">Edit</button>
-                    <button class="btn btn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>
+                    <button class="bttn bttn-sm bttn-info" ng-click="editBlog(b.id)">Edit</button>
+                    <button class="bttn bttn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>
                 </div>
             </li>
         </ul>
@@ -38,11 +38,12 @@
                     <div class="pull-left">{{ p.title }} (id: {{ p.id }})</div>
 
                     <div class="pull-right">
-                        <button class="btn btn-sm btn-default" ng-click="showDetail=!showDetail"
-                                ng-class="{'btn-info': !showDetail}">Detail
+                        <button class="bttn bttn-sm bttn-default" ng-click="showDetail=!showDetail"
+                                ng-class="{'bttn-info': !showDetail}">Detail
                         </button>
-                        <button class="btn btn-sm btn-info" ng-click="showDetail=false;editProject(p.id)">Edit</button>
-                        <button class="btn btn-sm btn-danger" ng-click="deleteProject(p.id)">Delete</button>
+                        <button class="bttn bttn-sm bttn-info" ng-click="showDetail=false;editProject(p.id)">Edit
+                        </button>
+                        <button class="bttn bttn-sm btn-danger" ng-click="deleteProject(p.id)">Delete</button>
                     </div>
                 </div>
 
