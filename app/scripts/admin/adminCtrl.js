@@ -157,6 +157,9 @@ angular.module('dc-admin')
             Auth.logout().then($route.reload);
         };
 
+        /**
+         * Save button clicked, either update blog (edit mode) or create new one
+         */
         $scope.saveBlog = function () {
             $scope.editMode ? updateBlog() : createBlog();
         };
@@ -194,7 +197,7 @@ angular.module('dc-admin')
         $scope.createProject = function () {
             console.log($scope.newProj);
             if (!validProject()) return;
-            Admin.createProject($scope.newProj).then(reloadBlogs);
+            Admin.createProject($scope.newProj).then(reloadProjects);
         };
 
         /**
@@ -215,10 +218,13 @@ angular.module('dc-admin')
             });
         };
 
+        /**
+         * Delete project
+         */
         $scope.deleteProject = function (id) {
             if (!angular.isDefined(id)) return;
 
-            Admin.deleteProject(id).then(reloadBlogs);
+            Admin.deleteProject(id).then(reloadProjects);
         };
 
         clearBlog();

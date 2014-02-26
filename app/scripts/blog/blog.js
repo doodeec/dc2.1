@@ -21,7 +21,7 @@ angular.module('dc-blog', [])
                 return $http.get('/api/blogs/home');
             },
             /**
-             * Loads a existing blogs
+             * Loads all existing blogs
              * Promise returns an array of blogs
              * @returns {Object} $http promise
              */

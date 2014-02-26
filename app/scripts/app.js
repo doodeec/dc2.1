@@ -6,6 +6,7 @@ angular.module('dc21App', [
         'ngSanitize',
         'ngRoute',
         'dc-blog',
+        'dc-project',
         'dc-admin',
         'dc-loader'
     ])
@@ -22,6 +23,14 @@ angular.module('dc21App', [
             .when('/blog/:id', {
                 templateUrl: 'partials/blog',
                 controller: 'BlogCtrl'
+            })
+            .when('/projects', {
+                templateUrl: 'partials/projects',
+                controller: 'ProjectsCtrl'
+            })
+            .when('/project/:id', {
+                templateUrl: 'partials/project',
+                controller: 'ProjectCtrl'
             })
             .when('/admin', {
                 templateUrl: 'partials/admin',

@@ -168,7 +168,7 @@ angular.module('dc-admin', ['dc-loader'])
              */
             deleteProject: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misBlogId);
-                return $http.post('/api/project/delete', id);
+                return $http.post('/api/project/delete', { id: id });
             }
         };
     });

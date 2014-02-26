@@ -19,9 +19,12 @@
 <div class="well clearfix">
     <div class="col-md-6">
         <div class="alert alert-info" ng-if="loadingBlogs">Loading blogs...</div>
+        <div class="alert alert-warning" ng-if="!blogs.length && !loadingBlogs">There are no blogs</div>
         <ul>
             <li ng-repeat="b in blogs" class="list-group-item clearfix">
-                <div class="pull-left">{{ b.title }} (id: {{ b.id }})</div>
+                <div class="pull-left">{{ b.title }}
+                    <small>(id: {{ b.id }})</small>
+                </div>
                 <div class="pull-right">
                     <button class="bttn bttn-sm bttn-info" ng-click="editBlog(b.id)">Edit</button>
                     <button class="bttn bttn-sm btn-danger" ng-click="deleteBlog(b.id)">Delete</button>
@@ -32,10 +35,13 @@
 
     <div class="col-md-6">
         <div class="alert alert-info" ng-if="loadingProjects">Loading projects...</div>
+        <div class="alert alert-warning" ng-if="!projects.length && !loadingProjects">There are no projects</div>
         <ul>
             <li ng-repeat="p in projects" class="list-group-item clearfix">
                 <div class="clearfix">
-                    <div class="pull-left">{{ p.title }} (id: {{ p.id }})</div>
+                    <div class="pull-left">{{ p.title }}
+                        <small>(id: {{ p.id }})</small>
+                    </div>
 
                     <div class="pull-right">
                         <button class="bttn bttn-sm bttn-default" ng-click="showDetail=!showDetail"
