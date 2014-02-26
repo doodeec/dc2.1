@@ -5,9 +5,9 @@
 
     <div class="alert alert-info" ng-if="loadingProjects">Loading projects...</div>
     <div class="alert alert-warning" ng-if="!projects.length && !loadingProjects">There are no projects</div>
-    <ul>
-        <li ng-repeat="p in projects" class="well clearfix col-md-6">
-            <h4><a ng-href="project/{{ p.id }}">{{ p.title }}</a></h4>
+    <ul class="flex-wrapper">
+        <li ng-repeat="p in projects" class="box clearfix flex-1-30">
+        <h4><a ng-href="project/{{ p.id }}">{{ p.title }}</a></h4>
             <small>(id: {{ p.id }})</small>
             <p>{{ p.shortDesc }}</p>
         </li>

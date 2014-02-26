@@ -75,3 +75,33 @@ h1, h2, h3, h4, h5, h6 {
 .form-control {
     margin: 0 0 1em 0;
 }
+
+.header .nav {
+    li {
+        float: left;
+
+        &.active {
+            & > a, & > a:hover, & > a:focus {
+                color: white;
+                background-color: #428bca;
+            }
+        }
+    }
+}
+
+.box {
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: whitesmoke;
+    border: 1px solid #e3e3e3;
+}
+
+.flex-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-1-30 {
+    flex: 1 26%;
+    margin: 0.5em;
+}

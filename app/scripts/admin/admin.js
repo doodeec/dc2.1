@@ -15,15 +15,15 @@ angular.module('dc-admin', ['dc-loader'])
         }
 
         function storeCache(key, data) {
-            if (!angular.isDefined(data.data)) return;
+            if (!angular.isDefined(data)) return;
 
-            if (angular.isArray(data.data)) {
-                var i = 0, len = data.data.length, item;
-                for (; i < len, item = data.data[i]; i++) {
-                    localCache[key + item.id] = item;
+            if (angular.isArray(data)) {
+                var i = 0, len = data.length;
+                for (; i < len; i++) {
+                    storeCache(key, data[i]);
                 }
-            } else {
-                localCache[key] = data;
+            } else if (angular.isObject(data)) {
+                localCache[key + data.id] = data;
             }
         }
 
@@ -41,9 +41,9 @@ angular.module('dc-admin', ['dc-loader'])
                 if (cache) {
                     defer.resolve(cache);
                 } else {
-                    $http.get('/api/blog', {params: {id: id}}).then(function (data) {
-                        storeCache('blog.' + id, data);
-                        defer.resolve(data);
+                    $http.get('/api/blog', {params: {id: id}}).then(function (blog) {
+                        storeCache('blog.', blog.data);
+                        defer.resolve(blog);
                     }, defer.reject);
                 }
 
@@ -56,9 +56,9 @@ angular.module('dc-admin', ['dc-loader'])
             loadAllBlogs: function () {
                 var defer = $q.defer();
 
-                $http.get('/api/blogs').then(function (data) {
-                    storeCache('blog.', data);
-                    defer.resolve(data);
+                $http.get('/api/blogs').then(function (blogs) {
+                    storeCache('blog.', blogs.data);
+                    defer.resolve(blogs);
                 }, defer.reject);
 
                 return defer.promise;
@@ -115,9 +115,9 @@ angular.module('dc-admin', ['dc-loader'])
             loadAllProjects: function () {
                 var defer = $q.defer();
 
-                $http.get('/api/projects').then(function (data) {
-                    storeCache('project.', data);
-                    defer.resolve(data);
+                $http.get('/api/projects').then(function (projects) {
+                    storeCache('project.', projects.data);
+                    defer.resolve(projects);
                 }, defer.reject);
 
                 return defer.promise;
@@ -135,9 +135,9 @@ angular.module('dc-admin', ['dc-loader'])
                 if (cache) {
                     defer.resolve(cache);
                 } else {
-                    $http.get('/api/project', {params: {id: id}}).then(function (data) {
-                        storeCache('project.' + id, data);
-                        defer.resolve(data);
+                    $http.get('/api/project', {params: {id: id}}).then(function (project) {
+                        storeCache('project.', project.data);
+                        defer.resolve(project);
                     }, defer.reject);
                 }
 
