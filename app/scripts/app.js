@@ -32,6 +32,10 @@ angular.module('dc21App', [
                 templateUrl: 'partials/project',
                 controller: 'ProjectCtrl'
             })
+            .when('/contact', {
+                templateUrl: 'partials/contact',
+                controller: 'ContactCtrl'
+            })
             .when('/admin', {
                 templateUrl: 'partials/admin',
                 controller: 'AdminCtrl',
