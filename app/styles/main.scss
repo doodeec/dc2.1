@@ -1,3 +1,5 @@
+$socialHeight: 20em;
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -46,30 +48,6 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 19px;
   color: #777;
   border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-
-.marketing p + h4 {
-  margin-top: 28px;
 }
 
 .form-control {
@@ -133,4 +111,12 @@ h1, h2, h3, h4, h5, h6 {
     transform: translate(0, 0);
     opacity: 1;
   }
+}
+
+.mail, .twitter, .github, .linkedin {
+  height: $socialHeight;
+}
+
+.facebook {
+  height: $socialHeight*2;
 }

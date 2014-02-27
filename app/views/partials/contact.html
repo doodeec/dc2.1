@@ -1,12 +1,24 @@
 <div ng-include="'partials/navbar'"></div>
 
 <div class="contact-board clearfix">
-    <div class="contact-social facebook animate-show from-left col-md-6"
-         ng-class="{'animate-show-active': facebook}">
-        Facebook
+    <div class="contact-social linkedin animate-show from-left col-md-8"
+         ng-class="{'animate-show-active': social.linkedin}">
+        Linkedin
     </div>
-    <div class="contact-social twitter animate-show from-bottom col-md-6"
-         ng-class="{'animate-show-active': twitter}">
-        Twitter
+    <div class="contact-social facebook animate-show from-right col-md-4 pull-right"
+         ng-class="{'animate-show-active': social.facebook}">
+    Facebook
+    </div>
+    <div class="contact-social twitter animate-show from-bottom col-md-8"
+         ng-class="{'animate-show-active': social.twitter}">
+    Twitter
+    </div>
+    <div class="contact-social github animate-show from-left col-md-6"
+         ng-class="{'animate-show-active': social.github}">
+        GitHub
+    </div>
+    <div class="contact-social mail animate-show from-right col-md-6"
+         ng-class="{'animate-show-active': social.mail}">
+        Email
     </div>
 </div>

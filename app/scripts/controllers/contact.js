@@ -2,15 +2,23 @@
 
 angular.module('dc21App')
     .controller('ContactCtrl', function ($scope, $timeout) {
-        $scope.facebook = false;
-        $scope.twitter = false;
+        var delay = 200;
+        var social = ['linkedin', 'facebook', 'twitter', 'github', 'mail']
 
-        // kick off animations
-        $timeout(function () {
-            $scope.facebook = true;
+        $scope.social = {
+            facebook: false,
+            twitter: false,
+            mail: false,
+            github: false,
+            linkedin: false
+        };
 
+        var kickoffAnim = function (i) {
             $timeout(function () {
-                $scope.twitter = true;
-            }, 200);
-        });
+                $scope.social[social[i]] = true;
+                if (social[i + 1]) kickoffAnim(i + 1);
+            }, delay);
+        };
+
+        kickoffAnim(0);
     });
