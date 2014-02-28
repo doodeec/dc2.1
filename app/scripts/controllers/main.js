@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dc21App')
-    .controller('MainCtrl', function ($scope, $rootScope, BlogService) {
+    .controller('MainCtrl', function ($scope, BlogService) {
         BlogService.loadBlogs().then(function (blogArticles) {
             $scope.blogArticles = blogArticles.data;
         });

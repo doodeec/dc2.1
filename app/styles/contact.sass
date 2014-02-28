@@ -1,0 +1,35 @@
+$socialHeight: 20em
+
+.contact-social
+    padding: 0.5em
+
+    .linkedin, .facebook, .twitter, .github, .mail
+        border: 1px solid black
+        height: 100%
+
+.animate-show
+    transition: all 0.5s ease, opacity 0.3s ease
+    transition-delay: 0, 0.2s
+    opacity: 0
+
+    &.from-left
+        transform: translate(-100%, 0)
+
+    &.from-right
+        transform: translate(100%, 0)
+
+    &.from-top
+        transform: translate(0, -300%)
+
+    &.from-bottom
+        transform: translate(0, 400%)
+
+    &.animate-show-active
+        transform: translate(0, 0)
+        opacity: 1
+
+.social-half
+    height: $socialHeight
+
+.social-full
+    height: $socialHeight*2
