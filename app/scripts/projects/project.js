@@ -2,7 +2,8 @@
 
 angular.module('dc-project', [])
     .factory('ProjectService', function ($http, $q) {
-        var localCache = {};
+        var localCache = {},
+            projectKey = 'project.';
 
         function checkCache(key) {
             return (key in localCache) ? { status: 200, data: localCache[key] } : false;
@@ -26,19 +27,13 @@ angular.module('dc-project', [])
              * @returns {Object} promise
              */
             loadProject: function (id) {
-                var defer = $q.defer(),
-                    cache = checkCache('project.' + id);
+                var cache = checkCache(projectKey + id);
 
-                if (cache) {
-                    defer.resolve(cache);
-                } else {
-                    $http.get('/api/project', {params: {id: id}}).then(function (project) {
-                        saveToCache('project.', project.data);
-                        defer.resolve(project);
-                    }, defer.reject);
-                }
-
-                return defer.promise;
+                return $q.when(cache || $http.get('/api/project', {params: {id: id}})
+                    .then(function (project) {
+                        saveToCache(projectKey, project.data);
+                        return $q.when(project);
+                    }));
             },
             /**
              * Loads all existing projects
@@ -46,14 +41,11 @@ angular.module('dc-project', [])
              * @returns {Object} $http promise
              */
             loadAllProjects: function () {
-                var defer = $q.defer();
-
-                $http.get('/api/projects').then(function (projects) {
-                    saveToCache('project.', projects.data);
-                    defer.resolve(projects);
-                }, defer.reject);
-
-                return defer.promise;
+                return $http.get('/api/projects')
+                    .then(function (projects) {
+                        saveToCache(projectKey, projects.data);
+                        return $q.when(projects);
+                    });
             }
         };
     });

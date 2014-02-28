@@ -35,33 +35,24 @@ angular.module('dc-admin', ['dc-loader'])
              */
             loadBlog: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misBlogId);
-                var defer = $q.defer(),
-                    cache = checkLocalCache('blog.' + id);
+                var cache = checkLocalCache('blog.' + id);
 
-                if (cache) {
-                    defer.resolve(cache);
-                } else {
-                    $http.get('/api/blog', {params: {id: id}}).then(function (blog) {
+                return $q.when(cache || $http.get('/api/blog', {params: {id: id}})
+                    .then(function (blog) {
                         storeCache('blog.', blog.data);
-                        defer.resolve(blog);
-                    }, defer.reject);
-                }
-
-                return defer.promise;
+                        return $q.when(blog);
+                    }));
             },
             /**
              * Loads all blogs
              * @returns {Object} promise
              */
             loadAllBlogs: function () {
-                var defer = $q.defer();
-
-                $http.get('/api/blogs').then(function (blogs) {
-                    storeCache('blog.', blogs.data);
-                    defer.resolve(blogs);
-                }, defer.reject);
-
-                return defer.promise;
+                return $http.get('/api/blogs')
+                    .then(function (blogs) {
+                        storeCache('blog.', blogs.data);
+                        return $q.when(blogs);
+                    });
             },
             /**
              * Creates new blog
@@ -113,14 +104,11 @@ angular.module('dc-admin', ['dc-loader'])
              * @returns {Object} $http promise
              */
             loadAllProjects: function () {
-                var defer = $q.defer();
-
-                $http.get('/api/projects').then(function (projects) {
-                    storeCache('project.', projects.data);
-                    defer.resolve(projects);
-                }, defer.reject);
-
-                return defer.promise;
+                return $http.get('/api/projects')
+                    .then(function (projects) {
+                        storeCache('project.', projects.data);
+                        return $q.when(projects);
+                    });
             },
             /**
              * Loads project with specific id
@@ -129,19 +117,14 @@ angular.module('dc-admin', ['dc-loader'])
              */
             loadProject: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misProjId);
-                var defer = $q.defer(),
-                    cache = checkLocalCache('project.' + id);
+                var cache = checkLocalCache('project.' + id);
 
-                if (cache) {
-                    defer.resolve(cache);
-                } else {
-                    $http.get('/api/project', {params: {id: id}}).then(function (project) {
+                return $q.when(cache || $http.get('/api/project', {params: {id: id}})
+                    .then(function (project) {
                         storeCache('project.', project.data);
-                        defer.resolve(project);
-                    }, defer.reject);
-                }
+                        return $q.when(project);
+                    }));
 
-                return defer.promise;
             },
             /**
              * Creates new project
