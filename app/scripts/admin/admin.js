@@ -1,17 +1,18 @@
 'use strict';
 
 angular.module('dc-admin', ['dc-loader'])
-    .factory('Admin', function ($http, $q) {
+    .factory('Admin', function ($http, $q, $cacheFactory) {
         var errorStrings = {
             misProjId: 'Missing project id',
             misBlogId: 'Missing blog id',
             typeError: 'Wrong parameter type'
         };
 
-        var localCache = {};
+        var localCache = $cacheFactory('admin');
 
         function checkLocalCache(key) {
-            return (key in localCache) ? { status: 200, data: localCache[key] } : false;
+            var data = localCache.get(key);
+            return (data) ? { status: 200, data: data } : false;
         }
 
         function storeCache(key, data) {
@@ -23,7 +24,7 @@ angular.module('dc-admin', ['dc-loader'])
                     storeCache(key, data[i]);
                 }
             } else if (angular.isObject(data)) {
-                localCache[key + data.id] = data;
+                localCache.put(type + data.id, data);
             }
         }
 
@@ -35,9 +36,8 @@ angular.module('dc-admin', ['dc-loader'])
              */
             loadBlog: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misBlogId);
-                var cache = checkLocalCache('blog.' + id);
 
-                return $q.when(cache || $http.get('/api/blog', {params: {id: id}})
+                return $q.when(checkLocalCache('blog.' + id) || $http.get('/api/blog', {params: {id: id}})
                     .then(function (blog) {
                         storeCache('blog.', blog.data);
                         return $q.when(blog);
@@ -117,9 +117,8 @@ angular.module('dc-admin', ['dc-loader'])
              */
             loadProject: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misProjId);
-                var cache = checkLocalCache('project.' + id);
 
-                return $q.when(cache || $http.get('/api/project', {params: {id: id}})
+                return $q.when(checkLocalCache('project.' + id) || $http.get('/api/project', {params: {id: id}})
                     .then(function (project) {
                         storeCache('project.', project.data);
                         return $q.when(project);

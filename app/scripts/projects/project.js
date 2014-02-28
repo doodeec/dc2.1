@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('dc-project', [])
-    .factory('ProjectService', function ($http, $q) {
-        var localCache = {},
+    .factory('ProjectService', function ($http, $q, $cacheFactory) {
+        var localCache = $cacheFactory('projects'),
             projectKey = 'project.';
 
         function checkCache(key) {
-            return (key in localCache) ? { status: 200, data: localCache[key] } : false;
+            var data = localCache.get(key);
+            return (data) ? { status: 200, data: data } : false;
         }
 
         function saveToCache(type, data) {
@@ -16,7 +17,7 @@ angular.module('dc-project', [])
                     saveToCache(type, data[i]);
                 }
             } else if (angular.isObject(data)) {
-                localCache[type + data.id] = data;
+                localCache.put(type + data.id, data);
             }
         }
 
@@ -27,9 +28,7 @@ angular.module('dc-project', [])
              * @returns {Object} promise
              */
             loadProject: function (id) {
-                var cache = checkCache(projectKey + id);
-
-                return $q.when(cache || $http.get('/api/project', {params: {id: id}})
+                return $q.when(checkCache(projectKey + id) || $http.get('/api/project', {params: {id: id}})
                     .then(function (project) {
                         saveToCache(projectKey, project.data);
                         return $q.when(project);

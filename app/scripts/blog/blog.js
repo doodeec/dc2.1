@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('dc-blog', [])
-    .factory('BlogService', function ($http, $q) {
-        var localCache = {},
+    .factory('BlogService', function ($http, $q, $cacheFactory) {
+        var localCache = $cacheFactory('blogs'),
             blogKey = 'blog.';
 
         function checkCache(key) {
-            return (key in localCache) ? { status: 200, data: localCache[key] } : false;
+            var data = localCache.get(key);
+            return (data) ? { status: 200, data: data } : false;
         }
 
         function saveToCache(type, data) {
@@ -16,7 +17,7 @@ angular.module('dc-blog', [])
                     saveToCache(type, data[i]);
                 }
             } else if (angular.isObject(data)) {
-                localCache[type + data.id] = data;
+                localCache.put(type + data.id, data);
             }
         }
 
@@ -27,9 +28,7 @@ angular.module('dc-blog', [])
              * @returns {Object} $http promise
              */
             loadBlog: function (id) {
-                var cache = checkCache(blogKey + id);
-
-                return $q.when(cache || $http.get('/api/blog', {params: {id: id}})
+                return $q.when(checkCache(blogKey + id) || $http.get('/api/blog', {params: {id: id}})
                     .then(function (blog) {
                         saveToCache(blogKey, blog.data);
                         return $q.when(blog);
