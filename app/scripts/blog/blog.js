@@ -1,25 +1,9 @@
 'use strict';
 
 angular.module('dc-blog', [])
-    .factory('BlogService', function ($http, $q, $cacheFactory) {
-        var localCache = $cacheFactory('blogs'),
+    .factory('BlogService', function ($http, $q, CacheService) {
+        var localCache = CacheService.get('blogs'),
             blogKey = 'blog.';
-
-        function checkCache(key) {
-            var data = localCache.get(key);
-            return (data) ? { status: 200, data: data } : false;
-        }
-
-        function saveToCache(type, data) {
-            if (angular.isArray(data)) {
-                var i = 0, len = data.length;
-                for (; i < len; i++) {
-                    saveToCache(type, data[i]);
-                }
-            } else if (angular.isObject(data)) {
-                localCache.put(type + data.id, data);
-            }
-        }
 
         return {
             /**
@@ -28,9 +12,9 @@ angular.module('dc-blog', [])
              * @returns {Object} $http promise
              */
             loadBlog: function (id) {
-                return $q.when(checkCache(blogKey + id) || $http.get('/api/blog', {params: {id: id}})
+                return $q.when(localCache.load(blogKey + id) || $http.get('/api/blog', {params: {id: id}})
                     .then(function (blog) {
-                        saveToCache(blogKey, blog.data);
+                        localCache.save(blogKey, blog.data);
                         return $q.when(blog);
                     }));
             },
@@ -42,7 +26,7 @@ angular.module('dc-blog', [])
             loadBlogs: function () {
                 return $http.get('/api/blogs/home')
                     .then(function (blogs) {
-                        saveToCache(blogKey, blogs.data);
+                        localCache.save(blogKey, blogs.data);
                         return $q.when(blogs);
                     });
             },

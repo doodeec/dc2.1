@@ -1,25 +1,9 @@
 'use strict';
 
 angular.module('dc-project', [])
-    .factory('ProjectService', function ($http, $q, $cacheFactory) {
-        var localCache = $cacheFactory('projects'),
+    .factory('ProjectService', function ($http, $q, CacheService) {
+        var localCache = CacheService.get('projects'),
             projectKey = 'project.';
-
-        function checkCache(key) {
-            var data = localCache.get(key);
-            return (data) ? { status: 200, data: data } : false;
-        }
-
-        function saveToCache(type, data) {
-            if (angular.isArray(data)) {
-                var i = 0, len = data.length;
-                for (; i < len; i++) {
-                    saveToCache(type, data[i]);
-                }
-            } else if (angular.isObject(data)) {
-                localCache.put(type + data.id, data);
-            }
-        }
 
         return {
             /**
@@ -28,9 +12,9 @@ angular.module('dc-project', [])
              * @returns {Object} promise
              */
             loadProject: function (id) {
-                return $q.when(checkCache(projectKey + id) || $http.get('/api/project', {params: {id: id}})
+                return $q.when(localCache.load(projectKey + id) || $http.get('/api/project', {params: {id: id}})
                     .then(function (project) {
-                        saveToCache(projectKey, project.data);
+                        localCache.save(projectKey, project.data);
                         return $q.when(project);
                     }));
             },
@@ -42,7 +26,7 @@ angular.module('dc-project', [])
             loadAllProjects: function () {
                 return $http.get('/api/projects')
                     .then(function (projects) {
-                        saveToCache(projectKey, projects.data);
+                        localCache.save(projectKey, projects.data);
                         return $q.when(projects);
                     });
             }

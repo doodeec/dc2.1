@@ -1,32 +1,14 @@
 'use strict';
 
 angular.module('dc-admin', ['dc-loader'])
-    .factory('Admin', function ($http, $q, $cacheFactory) {
+    .factory('Admin', function ($http, $q, CacheService) {
         var errorStrings = {
             misProjId: 'Missing project id',
             misBlogId: 'Missing blog id',
             typeError: 'Wrong parameter type'
         };
 
-        var localCache = $cacheFactory('admin');
-
-        function checkLocalCache(key) {
-            var data = localCache.get(key);
-            return (data) ? { status: 200, data: data } : false;
-        }
-
-        function storeCache(key, data) {
-            if (!angular.isDefined(data)) return;
-
-            if (angular.isArray(data)) {
-                var i = 0, len = data.length;
-                for (; i < len; i++) {
-                    storeCache(key, data[i]);
-                }
-            } else if (angular.isObject(data)) {
-                localCache.put(type + data.id, data);
-            }
-        }
+        var localCache = CacheService.get('admin');
 
         return {
             /**
@@ -37,9 +19,9 @@ angular.module('dc-admin', ['dc-loader'])
             loadBlog: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misBlogId);
 
-                return $q.when(checkLocalCache('blog.' + id) || $http.get('/api/blog', {params: {id: id}})
+                return $q.when(localCache.load('blog.' + id) || $http.get('/api/blog', {params: {id: id}})
                     .then(function (blog) {
-                        storeCache('blog.', blog.data);
+                        localCache.save('blog.', blog.data);
                         return $q.when(blog);
                     }));
             },
@@ -50,7 +32,7 @@ angular.module('dc-admin', ['dc-loader'])
             loadAllBlogs: function () {
                 return $http.get('/api/blogs')
                     .then(function (blogs) {
-                        storeCache('blog.', blogs.data);
+                        localCache.save('blog.', blogs.data);
                         return $q.when(blogs);
                     });
             },
@@ -106,7 +88,7 @@ angular.module('dc-admin', ['dc-loader'])
             loadAllProjects: function () {
                 return $http.get('/api/projects')
                     .then(function (projects) {
-                        storeCache('project.', projects.data);
+                        localCache.save('project.', projects.data);
                         return $q.when(projects);
                     });
             },
@@ -118,9 +100,9 @@ angular.module('dc-admin', ['dc-loader'])
             loadProject: function (id) {
                 if (!angular.isDefined(id)) throw new Error(errorStrings.misProjId);
 
-                return $q.when(checkLocalCache('project.' + id) || $http.get('/api/project', {params: {id: id}})
+                return $q.when(localCache.load('project.' + id) || $http.get('/api/project', {params: {id: id}})
                     .then(function (project) {
-                        storeCache('project.', project.data);
+                        localCache.save('project.', project.data);
                         return $q.when(project);
                     }));
 
