@@ -38,7 +38,7 @@ angular.module('dc-blog', [])
             loadAllBlogs: function () {
                 return $http.get('/api/blogs')
                     .then(function (blogs) {
-                        saveToCache(blogKey, blogs.data);
+                        localCache.save(blogKey, blogs.data);
                         return $q.when(blogs);
                     });
             }
