@@ -9,20 +9,12 @@
 
 module.exports = function (grunt) {
 
-    // Load grunt tasks automatically
     require('load-grunt-tasks')(grunt);
-
-    // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
-
     grunt.loadNpmTasks('grunt-devtools');
 
-    // Define the configuration for all the tasks
     grunt.initConfig({
-
-        // Project settings
         yeoman: {
-            // configurable paths
             app: require('./bower.json').appPath || 'app',
             dist: 'dist'
         },
@@ -56,10 +48,10 @@ module.exports = function (grunt) {
                     livereload: true
                 }
             },
-            jsTest: {
-                files: ['test/spec/{,*/}*.js'],
-                tasks: ['newer:jshint:test', 'karma']
-            },
+//            jsTest: {
+//                files: ['test/spec/{,*/}*.js'],
+//                tasks: ['newer:jshint:test', 'karma']
+//            },
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['compass:server', 'autoprefixer']
@@ -69,12 +61,11 @@ module.exports = function (grunt) {
             },
             livereload: {
                 files: [
-                    '<%= yeoman.app %>/views/{,*//*}*.{html,jade}',
+                    '<%= yeoman.app %>/views/{,*//*}*.{html}',
                     '{.tmp,<%= yeoman.app %>}/styles/{,*//*}*.css',
                     '{.tmp,<%= yeoman.app %>}/scripts/{,*//*}*.js',
-                    '<%= yeoman.app %>/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}',
+                    '<%= yeoman.app %>/images/{,*//*}*.{png,jpg,jpeg,gif}'
                 ],
-
                 options: {
                     livereload: true
                 }
@@ -91,8 +82,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-
-        // Make sure code styles are up to par and there are no obvious mistakes
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
@@ -106,15 +95,8 @@ module.exports = function (grunt) {
             },
             all: [
                 '<%= yeoman.app %>/scripts/{,*/}*.js'
-            ],
-            test: {
-                options: {
-                    jshintrc: 'test/.jshintrc'
-                },
-                src: ['test/spec/{,*/}*.js']
-            }
+            ]
         },
-
         // Empties folders to start fresh
         clean: {
             dist: {
@@ -130,25 +112,11 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            heroku: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            'heroku/*',
-                            '!heroku/.git*',
-                            '!heroku/Procfile'
-                        ]
-                    }
-                ]
-            },
             server: '.tmp'
         },
-
-        // Add vendor prefixed styles
         autoprefixer: {
             options: {
-                browsers: ['last 1 version']
+                browsers: ['last 2 version']
             },
             dist: {
                 files: [
@@ -161,8 +129,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
-        // Automatically inject Bower components into the app
         'bower-install': {
             app: {
                 html: '<%= yeoman.app %>/views/index.html',
@@ -170,8 +136,6 @@ module.exports = function (grunt) {
                 exclude: ['bootstrap-sass']
             }
         },
-
-        // Compiles Sass to CSS and generates necessary files if requested
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
@@ -261,15 +225,8 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
         htmlmin: {
             dist: {
-                options: {
-                    //collapseWhitespace: true,
-                    //collapseBooleanAttributes: true,
-                    //removeCommentsFromCDATA: true,
-                    //removeOptionalTags: true
-                },
                 files: [
                     {
                         expand: true,
@@ -280,9 +237,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
-        // Allow the use of non-minsafe AngularJS files. Automatically makes it
-        // minsafe compatible so Uglify does not destroy the ng references
         ngmin: {
             dist: {
                 files: [
@@ -295,15 +249,11 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
-        // Replace Google CDN references
         cdnify: {
             dist: {
                 html: ['<%= yeoman.dist %>/views/*.html']
             }
         },
-
-        // Copies remaining files to places other tasks can use
         copy: {
             dist: {
                 files: [
@@ -351,8 +301,6 @@ module.exports = function (grunt) {
                 src: '{,*/}*.css'
             }
         },
-
-        // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
                 'compass:server'
@@ -363,38 +311,10 @@ module.exports = function (grunt) {
             dist: [
                 'compass:dist',
                 'imagemin',
-                'svgmin',
-                'htmlmin'
+//                'svgmin',
+//                'htmlmin'
             ]
         },
-
-        // By default, your `index.html`'s <!-- Usemin block --> will take care of
-        // minification. These next options are pre-configured if you do not wish
-        // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/{,*/}*.css',
-        //         '<%= yeoman.app %>/styles/{,*/}*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/scripts/scripts.js': [
-        //         '<%= yeoman.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
-
-        // Test settings
         karma: {
             unit: {
                 configFile: 'karma.conf.js',
@@ -421,22 +341,21 @@ module.exports = function (grunt) {
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'express:prod', 'open', 'express-keepalive']);
+            return grunt.task.run(['build', 'express:prod', /*'open',*/ 'express-keepalive']);
         }
 
         grunt.task.run([
             'clean:server',
-            'bower-install',
+//            'bower-install',
             'concurrent:server',
             'autoprefixer',
             'express:dev',
-            'open',
+//            'open',
             'watch'
         ]);
     });
 
     grunt.registerTask('server', function () {
-        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
         grunt.task.run(['serve']);
     });
 
@@ -449,7 +368,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'bower-install',
+//        'bower-install',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
@@ -462,11 +381,6 @@ module.exports = function (grunt) {
         'rev',
         'usemin'
     ]);
-
-    grunt.registerTask('heroku', function () {
-        grunt.log.warn('The `heroku` task has been deprecated. Use `grunt build` to build for deployment.');
-        grunt.task.run(['build']);
-    });
 
     grunt.registerTask('default', [
         'newer:jshint',
