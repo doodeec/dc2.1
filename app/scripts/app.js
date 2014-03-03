@@ -82,3 +82,7 @@ angular.module('dc21App', [
             }
         });
     });
+
+angular.element(document).ready(function () {
+    angular.bootstrap(document, ['dc21App']);
+});
