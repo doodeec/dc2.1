@@ -9,7 +9,8 @@ angular.module('dc21App', [
         'dc-project',
         'dc-admin',
         'dc-loader',
-        'dc-cache'
+        'dc-cache',
+        'dc-socket'
     ])
     .config(function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
