@@ -15,7 +15,7 @@ angular.module('dc-project', [])
                 return $q.when(localCache.load(projectKey + id) || $http.get('/api/project', {params: {id: id}})
                     .then(function (project) {
                         localCache.save(projectKey, project.data);
-                        return $q.when(project);
+                        return project;
                     }));
             },
             /**
@@ -27,7 +27,7 @@ angular.module('dc-project', [])
                 return $http.get('/api/projects')
                     .then(function (projects) {
                         localCache.save(projectKey, projects.data);
-                        return $q.when(projects);
+                        return projects;
                     });
             }
         };

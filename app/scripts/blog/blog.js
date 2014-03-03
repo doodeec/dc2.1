@@ -15,7 +15,7 @@ angular.module('dc-blog', [])
                 return $q.when(localCache.load(blogKey + id) || $http.get('/api/blog', {params: {id: id}})
                     .then(function (blog) {
                         localCache.save(blogKey, blog.data);
-                        return $q.when(blog);
+                        return blog;
                     }));
             },
             /**
@@ -27,7 +27,7 @@ angular.module('dc-blog', [])
                 return $http.get('/api/blogs/home')
                     .then(function (blogs) {
                         localCache.save(blogKey, blogs.data);
-                        return $q.when(blogs);
+                        return blogs;
                     });
             },
             /**
@@ -39,7 +39,7 @@ angular.module('dc-blog', [])
                 return $http.get('/api/blogs')
                     .then(function (blogs) {
                         localCache.save(blogKey, blogs.data);
-                        return $q.when(blogs);
+                        return blogs;
                     });
             }
         };

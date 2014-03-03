@@ -22,7 +22,7 @@ angular.module('dc-admin', ['dc-loader'])
                 return $q.when(localCache.load('blog.' + id) || $http.get('/api/blog', {params: {id: id}})
                     .then(function (blog) {
                         localCache.save('blog.', blog.data);
-                        return $q.when(blog);
+                        return blog;
                     }));
             },
             /**
@@ -33,7 +33,7 @@ angular.module('dc-admin', ['dc-loader'])
                 return $http.get('/api/blogs')
                     .then(function (blogs) {
                         localCache.save('blog.', blogs.data);
-                        return $q.when(blogs);
+                        return blogs;
                     });
             },
             /**
@@ -89,7 +89,7 @@ angular.module('dc-admin', ['dc-loader'])
                 return $http.get('/api/projects')
                     .then(function (projects) {
                         localCache.save('project.', projects.data);
-                        return $q.when(projects);
+                        return projects;
                     });
             },
             /**
@@ -103,7 +103,7 @@ angular.module('dc-admin', ['dc-loader'])
                 return $q.when(localCache.load('project.' + id) || $http.get('/api/project', {params: {id: id}})
                     .then(function (project) {
                         localCache.save('project.', project.data);
-                        return $q.when(project);
+                        return project;
                     }));
 
             },
