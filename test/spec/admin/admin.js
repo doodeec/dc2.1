@@ -154,7 +154,6 @@ describe('Admin:: Admin', function () {
 
             it('should load 3 projects', function () {
                 AdminService.loadAllProjects().then(function (response) {
-                    console.log(response);
                     expect(response.data).toBeDefined();
                     expect(response.data.length).toBe(3);
                 });

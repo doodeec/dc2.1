@@ -109,7 +109,6 @@ angular.module('dc-admin')
          * Create new blog
          */
         function createBlog() {
-            console.log($scope.newBlog);
             if (!validBlog()) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
             Admin.createBlog($scope.newBlog).then(reloadBlogs);
@@ -119,7 +118,6 @@ angular.module('dc-admin')
          * Update blog
          */
         function updateBlog() {
-            console.log($scope.newBlog);
             if (!validBlog()) return;
             $scope.newBlog.allowedHome = Boolean($scope.newBlog.allowedHome);
             Admin.editBlog($scope.newBlog).then(reloadBlogs);
@@ -195,7 +193,6 @@ angular.module('dc-admin')
          * Create new project
          */
         $scope.createProject = function () {
-            console.log($scope.newProj);
             if (!validProject()) return;
             Admin.createProject($scope.newProj).then(reloadProjects);
         };
