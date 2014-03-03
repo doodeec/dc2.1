@@ -2,15 +2,18 @@
 
 describe('Admin:: Admin', function () {
 
+    beforeEach(module('dc-cache'));
     beforeEach(module('dc-admin'));
 
 
     var AdminService,
-        $httpBackend;
+        $httpBackend,
+        CacheService;
 
     beforeEach(inject(function ($injector) {
         AdminService = $injector.get('Admin');
         $httpBackend = $injector.get('$httpBackend');
+        CacheService = $injector.get('CacheService');
     }));
 
     it('should have all methods defined', function () {

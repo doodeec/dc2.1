@@ -2,14 +2,17 @@
 
 describe('Blog:: BlogService', function () {
 
+    beforeEach(module('dc-cache'));
     beforeEach(module('dc-blog'));
 
     var BlogService,
-        $httpBackend;
+        $httpBackend,
+        CacheService;
 
     beforeEach(inject(function ($injector) {
         BlogService = $injector.get('BlogService');
         $httpBackend = $injector.get('$httpBackend');
+        CacheService = $injector.get('CacheService');
     }));
 
     it('should have all methods defined', function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module('dc-cache', [])
     .factory('CacheService', function ($cacheFactory) {
         /**
          * Cache class

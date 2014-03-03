@@ -2,6 +2,7 @@
 
 describe('Blog:: BlogCtrl', function () {
 
+    beforeEach(module('dc-cache'));
     beforeEach(module('dc-blog'));
 
     var BlogCtrl,
