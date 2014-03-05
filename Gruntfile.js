@@ -1,11 +1,4 @@
-// Generated on 2014-02-22 using generator-angular-fullstack 1.2.7
 'use strict';
-
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
 
@@ -48,10 +41,6 @@ module.exports = function (grunt) {
                     livereload: true
                 }
             },
-//            jsTest: {
-//                files: ['test/spec/{,*/}*.js'],
-//                tasks: ['newer:jshint:test', 'karma']
-//            },
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['compass:server', 'autoprefixer']

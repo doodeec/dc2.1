@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('dc-socket', [])
-    .factory('Socket', function () {
-        if (angular.isUndefined(io)) {
+    .factory('Socket', function ($window) {
+        if (angular.isUndefined($window.io)) {
             return {
                 on: angular.noop,
                 emit: angular.noop,
@@ -10,7 +10,7 @@ angular.module('dc-socket', [])
             }
         }
 
-        var socket = io.connect();
+        var socket = $window.io.connect();
 
         return {
             on: function (event, callback) {
