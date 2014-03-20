@@ -3,9 +3,9 @@
 angular.module('dc21App')
     .controller('ContactCtrl', function ($scope, $timeout) {
         var delay = 200;
-        var social = ['linkedin', 'facebook', 'twitter', 'github', 'mail']
+        var social = ['linkedin', 'facebook', 'twitter', 'github', 'mail'];
 
-        $scope.social = {
+        var socialObj = {
             facebook: false,
             twitter: false,
             mail: false,
@@ -15,10 +15,12 @@ angular.module('dc21App')
 
         var kickoffAnim = function (i) {
             $timeout(function () {
-                $scope.social[social[i]] = true;
+                socialObj[social[i]] = true;
                 if (social[i + 1]) kickoffAnim(i + 1);
             }, delay);
         };
+
+        $scope.social = socialObj;
 
         kickoffAnim(0);
     });
