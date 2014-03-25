@@ -49,6 +49,7 @@ describe('Blog:: BlogDirective', function () {
 
         scope.$digest();
         $httpBackend.flush();
+        expect(element.isolateScope().blog.title).toBe('Test blog title');
         expect(element.find('h3').html()).toBe('Test blog title');
     });
 
@@ -58,6 +59,7 @@ describe('Blog:: BlogDirective', function () {
 
         scope.$digest();
         $httpBackend.flush();
+        expect(element.isolateScope().date).toBe('1. 1. 2014');
         expect(element.find('small').html()).toBe('1. 1. 2014');
     });
 
@@ -67,6 +69,7 @@ describe('Blog:: BlogDirective', function () {
 
         scope.$digest();
         $httpBackend.flush();
+        expect(element.isolateScope().blog.shortDesc).toBe('my short desc');
         expect(element.find('p').html()).toBe('my short desc');
     });
 });
