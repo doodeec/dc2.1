@@ -4,15 +4,6 @@ describe('Directive:: Navbar', function () {
 
     beforeEach(module('dc21App'));
 
-    var template = '<div class="header">' +
-        '<ul class="nav pull-right">' +
-        '<li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">' +
-        '<a ng-href="{{item.link}}">{{item.title}}</a>' +
-        '</li>' +
-        '</ul>' +
-        '<h3>DC<small>2.1</small></h3>' +
-        '</div>';
-
     var $rootScope,
         $httpBackend,
         element,
@@ -38,5 +29,11 @@ describe('Directive:: Navbar', function () {
         scope.$digest();
         expect(scope.menu).toBeDefined();
         expect(scope.menu.length).toBe(4);
+    });
+
+    it('should mark menu item as active', function () {
+        scope.$digest();
+        expect(scope.isActive('/')).toBe(true);
+        expect(angular.element(element.find('li')[0]).hasClass('active')).toBe(true);
     });
 });
