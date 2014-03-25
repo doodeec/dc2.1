@@ -43,4 +43,39 @@ describe('Service:: Auth', function () {
         AuthService.logout();
         $httpBackend.flush();
     });
+
+    it('should send put password request', function () {
+        $httpBackend.expectPUT('/api/users')
+            .respond(200);
+
+        AuthService.changePassword('oldpass', 'newpass');
+        $httpBackend.flush();
+    });
+
+    it('should send get current user request', function () {
+        $httpBackend.expectGET('/api/users/me')
+            .respond({name: 'testuser', email: 'test@test.test'});
+
+        var user = AuthService.currentUser();
+        $httpBackend.flush();
+
+        expect(user.name).toBe('testuser');
+        expect(user.email).toBe('test@test.test');
+    });
+
+    it('should check if user is logged in', function () {
+        $httpBackend.expectPOST('/api/session')
+            .respond({name: 'testuser', email: 'test@test.test'});
+
+        var user = {
+            email: 'test@e.mail',
+            password: 'newpassword'
+        };
+        expect(AuthService.isLoggedIn()).toBe(false);
+        AuthService.login(user).then(function () {
+            expect(AuthService.isLoggedIn()).toBe(true);
+        });
+
+        $httpBackend.flush();
+    });
 });
