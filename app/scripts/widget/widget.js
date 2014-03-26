@@ -3,7 +3,13 @@
 (function (ng) {
     function widgetProvider() {
         function saveRef(wgt) {
-            if (!angular.isObject(wgt)) return;
+            if (angular.isArray(wgt)) {
+                var i = 0, len = wgt.length, widget;
+                for (; i < len, widget = wgt[i]; i++) {
+                    saveRef.call(this, widget);
+                }
+                return;
+            } else if (!angular.isObject(wgt)) return;
 
             this.allWidgets[wgt.id] = wgt;
         }
@@ -16,9 +22,18 @@
 
         function getFn($http) {
             var saveWgtRef = saveRef.bind(this),
-                removeWgtRef = removeRef.bind(this);
+                removeWgtRef = removeRef.bind(this),
+                allW = this.allWidgets;
 
             return {
+                all: allW,
+                loadAll: function (reference) {
+                    return $http.get('api/widgets')
+                        .then(function (wgts) {
+                            saveWgtRef(wgts.data);
+                            return wgts.data;
+                        });
+                },
                 load: function (id) {
                     return $http.get('api/widget', {id: id})
                         .then(function (widget) {
