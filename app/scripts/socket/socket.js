@@ -9,8 +9,8 @@ angular.module('dc-socket', [])
         if (angular.isDefined($window.io)) {
             var socket = $window.io.connect();
 
-            on = socket.on;
-            emit = socket.emit;
+            on = socket.on.bind(socket);
+            emit = socket.emit.bind(socket);
             removeListener = function () {
                 return socket.removeListener.apply(socket, arguments);
             };
