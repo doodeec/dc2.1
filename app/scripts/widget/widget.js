@@ -27,7 +27,7 @@
 
             return {
                 all: allW,
-                loadAll: function (reference) {
+                loadAll: function () {
                     return $http.get('api/widgets')
                         .then(function (wgts) {
                             saveWgtRef(wgts.data);

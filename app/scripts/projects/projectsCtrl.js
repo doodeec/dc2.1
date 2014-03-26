@@ -3,7 +3,7 @@
 angular.module('dc-project')
     .controller('ProjectsCtrl', function ($scope, ProjectService) {
         function stopLoading() {
-            $scope.loadingProject = false;
+            $scope.loadingProjects = false;
         }
 
         // initialize empty array
