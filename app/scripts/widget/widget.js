@@ -28,28 +28,28 @@
             return {
                 all: allW,
                 loadAll: function () {
-                    return $http.get('api/widgets')
+                    return $http.get('/api/widgets')
                         .then(function (wgts) {
                             saveWgtRef(wgts.data);
                             return wgts.data;
                         });
                 },
                 load: function (id) {
-                    return $http.get('api/widget', {id: id})
+                    return $http.get('/api/widget', {id: id})
                         .then(function (widget) {
                             saveWgtRef(widget);
                             return widget;
                         });
                 },
                 save: function (wgt) {
-                    return $http.post('api/widget', wgt)
+                    return $http.post('/api/widget', wgt)
                         .then(function () {
                             saveWgtRef(wgt);
                             return arguments;
                         });
                 },
                 remove: function (id) {
-                    return $http.delete('api/widget', id)
+                    return $http.delete('/api/widget', id)
                         .then(function () {
                             removeWgtRef(id);
                             return arguments;
