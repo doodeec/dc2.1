@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('dc-project')
-    .controller('ProjectCtrl', function ($scope, $routeParams, ProjectService) {
+    .controller('ProjectCtrl', function ($scope, $location, $routeParams, ProjectService) {
         function stopLoading() {
             $scope.loadingProject = false;
         }
+
+        $scope.backToList = function () {
+            $location.path('/projects');
+        };
 
         // initialize empty object
         $scope.project = {};
