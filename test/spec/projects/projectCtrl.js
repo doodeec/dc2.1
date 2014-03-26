@@ -20,9 +20,6 @@ describe('Projects:: ProjectCtrl', function () {
 
         $routeParams = {id: 1};
 
-        /*$httpBackend.expectGET('/api/project?id=1')
-         .respond({id: 1, title: 'Project 1'});*/
-
         scope = $rootScope.$new();
         ProjectCtrl = $controller('ProjectCtrl', {
             $scope: scope,
