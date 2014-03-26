@@ -26,7 +26,14 @@ describe('Controller:: MainCtrl', function () {
             .respond([
                 {id: 1, title: 'Blog 1'},
                 {id: 2, title: 'Blog 2'},
-                {id: 2, title: 'Blog 5'}
+                {id: 5, title: 'Blog 5'}
+            ]);
+
+        $httpBackend.expectGET('/api/widgets')
+            .respond([
+                {id: 1},
+                {id: 2},
+                {id: 3}
             ]);
 
         scope = $rootScope.$new();
@@ -45,5 +52,11 @@ describe('Controller:: MainCtrl', function () {
         expect(scope.allBlogs).toBeUndefined();
         $httpBackend.flush();
         expect(scope.allBlogs.length).toBe(3);
+    });
+
+    it('should attach a list of 3 widgets to the scope.widgets', function () {
+        expect(scope.widgets.length).toBe(0);
+        $httpBackend.flush();
+        expect(scope.widgets.length).toBe(3);
     });
 });
