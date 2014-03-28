@@ -19,5 +19,7 @@ angular.module('dc21App')
         Widget.loadAll().then(function (wgts) {
             $scope.widgets = wgts;
             console.log(Widget.all);
+
+            Widget.load('blog widget').priority = 2000;
         });
     });

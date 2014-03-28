@@ -2,8 +2,12 @@
 
 (function (ng) {
     function widgetProvider() {
-        function Widget(options) {
-            this.id = options.id;
+        function Widget(properties) {
+            this.id = properties.id;
+            this.position = properties.position;
+            this.priority = properties.priority;
+            this.size = properties.size;
+            this.widgetType = properties.widgetType;
             //TODO
         }
 
@@ -29,7 +33,8 @@
                 return returnArr;
             } else if (!angular.isObject(wgt)) return null;
 
-            return this.allWidgets[wgt.id] = wgt;
+            // transform mongo object/s
+            return this.allWidgets[wgt.id] = new Widget(wgt);
         }
 
         /**
@@ -58,15 +63,11 @@
                     return $http.get('/api/widgets')
                         .then(function (wgts) {
                             saveWgtRef(wgts.data);
-                            return this.all;
+                            return allW;
                         });
                 },
                 load: function (id) {
-                    //TODO load from app memory
-                    return $http.get('/api/widget', {id: id})
-                        .then(function (widget) {
-                            return saveWgtRef(widget);
-                        });
+                    return (id in this.all) ? this.all[id] : null;
                 },
                 save: function (wgt) {
                     return $http.post('/api/widget', wgt)
