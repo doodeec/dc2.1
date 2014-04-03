@@ -27,20 +27,43 @@
          * @returns {number}
          */
         Widget.prototype.getPosition = function () {
-            var wgt, wgtsInPosition = [],
+            var wgtsInPosition = getPositionStack(this.position),
                 i = 0, len,
                 position = 0;
-            for (wgt in allWidgets) {
-                if (allWidgets[wgt].position === this.position) {
-                    wgtsInPosition.push(allWidgets[wgt]);
-                }
-            }
 
             for (len = wgtsInPosition.length; i < len; i++) {
                 if (wgtsInPosition[i].priority > this.priority) position++;
             }
             return position;
         };
+
+        /**
+         * Returns unordered array of all widgets in certain position
+         * @param position
+         * @returns {Array}
+         */
+        function getPositionStack(position) {
+            var wgt, wgtsInPosition = [];
+
+            for (wgt in allWidgets) {
+                if (allWidgets[wgt].position === position) {
+                    wgtsInPosition.push(allWidgets[wgt]);
+                }
+            }
+            return wgtsInPosition;
+        }
+
+        /**
+         * Returns ordered array of all widgets in certain position
+         * (according to their priority)
+         * @param position
+         * @returns {Array}
+         */
+        function getOrderedPositionStack(position) {
+            return getPositionStack(position).sort(function (a, b) {
+                return a.priority - b.priority;
+            });
+        }
 
         /**
          * Save widget reference in memory
@@ -73,20 +96,22 @@
         /**
          * Widget Provider
          * @param $http
-         * @returns {{all: {}, create: saveFn, loadAll: loadAll, load: load, save: saveFn, remove: remove}}
+         * @returns {{all: {}, create: saveFn, save: saveFn, getStack: getOrderedPositionStack, loadAll: loadAll, load: load, remove: remove}}
          */
         function getFn($http) {
             var saveFn = function (wgt) {
-                    return $http.post('/api/widget', wgt)
-                        .then(function (wgt) {
-                            saveRef(wgt);
-                            return wgt;
-                        });
-                };
+                return $http.post('/api/widget', wgt)
+                    .then(function (wgt) {
+                        saveRef(wgt);
+                        return wgt;
+                    });
+            };
 
             return {
                 all: allWidgets,
                 create: saveFn,
+                save: saveFn,
+                getStack: getOrderedPositionStack,
                 loadAll: function () {
                     return $http.get('/api/widgets')
                         .then(function (wgts) {
@@ -97,7 +122,6 @@
                 load: function (id) {
                     return (id in this.all) ? this.all[id] : null;
                 },
-                save: saveFn,
                 remove: function (id) {
                     return $http.delete('/api/widget', id)
                         .then(function () {
