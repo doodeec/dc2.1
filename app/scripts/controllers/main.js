@@ -16,6 +16,7 @@ angular.module('dc21App')
             console.log(data);
         });
 
+        //TODO just demo functionality
         Widget.loadAll().then(function (wgts) {
             $scope.widgets = wgts;
             console.log(Widget.all);
@@ -23,5 +24,7 @@ angular.module('dc21App')
 //            Widget.load('blog widget').priority = 2000;
 
             console.log(Widget.load('blog widget').getPosition());
+
+            Widget.create({id: 'newW2'});
         });
     });

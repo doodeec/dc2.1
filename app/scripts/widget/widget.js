@@ -68,14 +68,22 @@
         /**
          * Widget Provider
          * @param $http
-         * @returns {{all: ({}|*), loadAll: loadAll, load: load, save: save, remove: remove}}
+         * @returns {{all: {}, create: saveFn, loadAll: loadAll, load: load, save: saveFn, remove: remove}}
          */
         function getFn($http) {
             var saveWgtRef = saveRef.bind(this),
-                removeWgtRef = removeRef.bind(this);
+                removeWgtRef = removeRef.bind(this),
+                saveFn = function (wgt) {
+                    return $http.post('/api/widget', wgt)
+                        .then(function (wgt) {
+                            saveWgtRef(wgt);
+                            return wgt;
+                        });
+                };
 
             return {
                 all: allWidgets,
+                create: saveFn,
                 loadAll: function () {
                     return $http.get('/api/widgets')
                         .then(function (wgts) {
@@ -86,13 +94,7 @@
                 load: function (id) {
                     return (id in this.all) ? this.all[id] : null;
                 },
-                save: function (wgt) {
-                    return $http.post('/api/widget', wgt)
-                        .then(function () {
-                            saveWgtRef(wgt);
-                            return arguments;
-                        });
-                },
+                save: saveFn,
                 remove: function (id) {
                     return $http.delete('/api/widget', id)
                         .then(function () {
