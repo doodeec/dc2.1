@@ -23,7 +23,8 @@ angular.module('dc21App')
 
 //            Widget.load('blog widget').priority = 2000;
 
-            console.log(Widget.load('blog widget').getPosition());
+            var wgt = Widget.load('blog widget');
+            if (wgt) console.log(wgt.getPosition());
 
             Widget.create({id: 'newW2'});
         });

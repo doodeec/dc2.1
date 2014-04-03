@@ -36,6 +36,9 @@ describe('Controller:: MainCtrl', function () {
                 {id: 3}
             ]);
 
+        $httpBackend.expectPOST('/api/widget')
+            .respond({code: 200});
+
         scope = $rootScope.$new();
         MainCtrl = $controller('MainCtrl', {
             $scope: scope, BlogService: BlogService

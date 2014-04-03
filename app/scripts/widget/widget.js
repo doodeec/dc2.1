@@ -46,7 +46,7 @@
             var wgt, wgtsInPosition = [];
 
             for (wgt in allWidgets) {
-                if (allWidgets[wgt].position === position) {
+                if (angular.isUndefined(position) || allWidgets[wgt].position === position) {
                     wgtsInPosition.push(allWidgets[wgt]);
                 }
             }
@@ -116,7 +116,7 @@
                     return $http.get('/api/widgets')
                         .then(function (wgts) {
                             saveRef(wgts.data);
-                            return allWidgets;
+                            return getPositionStack();
                         });
                 },
                 load: function (id) {
