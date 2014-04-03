@@ -4,6 +4,11 @@
     function widgetProvider() {
         var allWidgets = {};
 
+        /**
+         * Widget constructor
+         * @param properties
+         * @constructor
+         */
         function Widget(properties) {
             this.id = properties.id;
             this.position = properties.position;
@@ -17,10 +22,10 @@
             return [this.size.x, this.size.y];
         };
 
-        Widget.prototype.destroy = function () {
-            //TODO
-        };
-
+        /**
+         * Returns priority index in its UI position
+         * @returns {number}
+         */
         Widget.prototype.getPosition = function () {
             var wgt, wgtsInPosition = [],
                 i = 0, len,
@@ -72,7 +77,6 @@
          */
         function getFn($http) {
             var saveWgtRef = saveRef.bind(this),
-                removeWgtRef = removeRef.bind(this),
                 saveFn = function (wgt) {
                     return $http.post('/api/widget', wgt)
                         .then(function (wgt) {
@@ -98,7 +102,7 @@
                 remove: function (id) {
                     return $http.delete('/api/widget', id)
                         .then(function () {
-                            removeWgtRef(id);
+                            removeRef(id);
                             return arguments;
                         })
                 }
