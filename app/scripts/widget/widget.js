@@ -2,6 +2,8 @@
 
 (function (ng) {
     function widgetProvider() {
+        var allWidgets = {};
+
         function Widget(properties) {
             this.id = properties.id;
             this.position = properties.position;
@@ -19,6 +21,21 @@
             //TODO
         };
 
+        Widget.prototype.getPosition = function () {
+            var wgt, wgtsInPosition = [],
+                i = 0, len,
+                position = 0;
+            for (wgt in allWidgets) {
+                if (allWidgets[wgt].position === this.position) {
+                    wgtsInPosition.push(allWidgets[wgt]);
+                }
+            }
+
+            for (len = wgtsInPosition.length; i < len; i++) {
+                if (wgtsInPosition[i].priority > this.priority) position++;
+            }
+        };
+
         /**
          * Save widget reference in memory
          * @param {Object/Array} wgt - widget/s to save
@@ -34,7 +51,7 @@
             } else if (!angular.isObject(wgt)) return null;
 
             // transform mongo object/s
-            return this.allWidgets[wgt.id] = new Widget(wgt);
+            return allWidgets[wgt.id] = new Widget(wgt);
         }
 
         /**
@@ -44,7 +61,7 @@
         function removeRef(wgtId) {
             if (angular.isUndefined(wgtId)) return;
 
-            delete this.allWidgets[wgtId];
+            delete allWidgets[wgtId];
         }
 
         /**
@@ -54,16 +71,15 @@
          */
         function getFn($http) {
             var saveWgtRef = saveRef.bind(this),
-                removeWgtRef = removeRef.bind(this),
-                allW = this.allWidgets;
+                removeWgtRef = removeRef.bind(this);
 
             return {
-                all: allW,
+                all: allWidgets,
                 loadAll: function () {
                     return $http.get('/api/widgets')
                         .then(function (wgts) {
                             saveWgtRef(wgts.data);
-                            return allW;
+                            return allWidgets;
                         });
                 },
                 load: function (id) {
@@ -85,8 +101,6 @@
                 }
             }
         }
-
-        this.allWidgets = {};
 
         getFn.$inject = ['$http'];
         this.$get = getFn;
