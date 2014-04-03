@@ -34,6 +34,7 @@
             for (len = wgtsInPosition.length; i < len; i++) {
                 if (wgtsInPosition[i].priority > this.priority) position++;
             }
+            return position;
         };
 
         /**
