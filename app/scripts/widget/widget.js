@@ -51,7 +51,7 @@
             if (angular.isArray(wgt)) {
                 var i = 0, len = wgt.length, widget, returnArr = [];
                 for (; i < len, widget = wgt[i]; i++) {
-                    returnArr.push(saveRef.call(this, widget));
+                    returnArr.push(saveRef(widget));
                 }
                 return returnArr;
             } else if (!angular.isObject(wgt)) return null;
@@ -76,11 +76,10 @@
          * @returns {{all: {}, create: saveFn, loadAll: loadAll, load: load, save: saveFn, remove: remove}}
          */
         function getFn($http) {
-            var saveWgtRef = saveRef.bind(this),
-                saveFn = function (wgt) {
+            var saveFn = function (wgt) {
                     return $http.post('/api/widget', wgt)
                         .then(function (wgt) {
-                            saveWgtRef(wgt);
+                            saveRef(wgt);
                             return wgt;
                         });
                 };
@@ -91,7 +90,7 @@
                 loadAll: function () {
                     return $http.get('/api/widgets')
                         .then(function (wgts) {
-                            saveWgtRef(wgts.data);
+                            saveRef(wgts.data);
                             return allWidgets;
                         });
                 },
