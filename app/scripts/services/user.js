@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .factory('User', function ($resource) {
         return $resource('/api/users/:id', {
             id: '@id'

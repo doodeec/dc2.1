@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('dc21App', [
+window.ngAppName = 'dc21App';
+
+angular.module(window.ngAppName, [
         'ngCookies',
         'ngResource',
         'ngSanitize',
@@ -85,5 +87,5 @@ angular.module('dc21App', [
     });
 
 angular.element(document).ready(function () {
-    angular.bootstrap(document, ['dc21App']);
+    angular.bootstrap(document, [window.ngAppName]);
 });

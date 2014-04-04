@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .factory('Auth', function Auth($location, $rootScope, Session, User, $cookieStore) {
 
         // Get currentUser from cookie
@@ -22,10 +22,10 @@ angular.module('dc21App')
                 return Session.save({
                     email: user.email,
                     password: user.password
-                },function (user) {
+                }, function (user) {
                     $rootScope.currentUser = user;
                     return cb();
-                },function (err) {
+                }, function (err) {
                     return cb(err);
                 }).$promise;
             },
@@ -62,9 +62,9 @@ angular.module('dc21App')
                 return User.update({
                     oldPassword: oldPassword,
                     newPassword: newPassword
-                },function (user) {
+                }, function (user) {
                     return cb(user);
-                },function (err) {
+                }, function (err) {
                     return cb(err);
                 }).$promise;
             },

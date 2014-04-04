@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .directive('dcNavbar', function ($location) {
         return {
             restrict: 'EA',

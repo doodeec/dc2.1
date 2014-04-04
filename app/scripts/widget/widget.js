@@ -2,7 +2,10 @@
 
 (function (ng) {
     function widgetProvider() {
-        var allWidgets = {};
+        var allWidgets = {},
+            allTypes = ['default'];
+
+        //TODO manage widget types (+registration)
 
         /**
          * Widget constructor
@@ -15,6 +18,8 @@
             this.priority = properties.priority;
             this.size = properties.size;
             this.widgetType = properties.widgetType;
+            this.vAlign = properties.vAlign;
+            this.hAlign = properties.hAlign;
             //TODO
         }
 
@@ -79,6 +84,11 @@
                 return returnArr;
             } else if (!angular.isObject(wgt)) return null;
 
+            //check possible wgt types
+            if (allTypes.indexOf(wgt.widgetType) === -1) {
+                throw new Error('Widget type "' + wgt.widgetType + '" not allowed.');
+            }
+
             // transform mongo object/s
             return allWidgets[wgt.id] = new Widget(wgt);
         }
@@ -102,8 +112,8 @@
             var saveFn = function (wgt) {
                 return $http.post('/api/widget', wgt)
                     .then(function (wgt) {
-                        saveRef(wgt);
-                        return wgt;
+                        saveRef(wgt.data);
+                        return wgt.data;
                     });
             };
 
@@ -128,6 +138,9 @@
                             removeRef(id);
                             return arguments;
                         })
+                },
+                registerType: function (type) {
+                    if (allTypes.indexOf(type) === -1) allTypes.push(type);
                 }
             }
         }

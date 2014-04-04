@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .factory('Session', function ($resource) {
         return $resource('/api/session/');
     });

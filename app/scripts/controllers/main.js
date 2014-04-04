@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .controller('MainCtrl', function ($scope, BlogService, Socket, Widget) {
         $scope.widgets = [];
 
@@ -12,9 +12,9 @@ angular.module('dc21App')
             $scope.allBlogs = blogArticles.data;
         });
 
-        Socket.on('success', function (data) {
-            console.log(data);
-        });
+        /*Socket.on('success', function (data) {
+         console.log(data);
+         });*/
 
         //TODO just demo functionality
         Widget.loadAll().then(function (wgts) {

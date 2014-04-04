@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .controller('SignupCtrl', function ($scope, Auth, $location) {
         $scope.user = {};
         $scope.errors = {};

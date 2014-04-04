@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dc21App')
+angular.module(window.ngAppName)
     .controller('ContactCtrl', function ($scope, $timeout) {
         var delay = 200;
         var social = ['linkedin', 'facebook', 'twitter', 'github', 'mail'];
