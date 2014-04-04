@@ -8,11 +8,15 @@
     <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
 </div>
 
-<div class="row marketing">
+<!--<div class="row marketing">
     <dc-blog dc-blog-article="article" ng-repeat="article in blogArticles"></dc-blog>
-</div>
+</div>-->
 
-<p>{{ allBlogs }}</p>
+<!--<p>{{ allBlogs }}</p>-->
+
+<div class="row marketing">
+    <dc-widget ng-repeat="wgt in widgets" wgt="wgt"></dc-widget>
+</div>
 
 <div class="footer">
     <p>&copy;2014 engineered by Dusan Bartos | doodeec.com | dusanbartos.com</p>

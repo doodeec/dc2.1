@@ -18,7 +18,8 @@ angular.module(window.ngAppName)
 
         //TODO just demo functionality
         Widget.loadAll().then(function (wgts) {
-            $scope.widgets = wgts;
+//            $scope.widgets = wgts;
+            $scope.widgets = Widget.getStack('position-1');
             console.log(Widget.all);
 
 //            Widget.load('blog widget').priority = 2000;

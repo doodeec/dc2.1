@@ -6,7 +6,8 @@ angular.module(window.ngAppName)
     })
     .directive('projectWgt', function () {
         return {
-            template: '<div>blog widget</div>',
+            restrict: 'EA',
+            template: '<div>project widget</div>',
             link: function (scope, elem, attrs) {
 
             }

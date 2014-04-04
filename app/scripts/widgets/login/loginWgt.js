@@ -6,6 +6,7 @@ angular.module(window.ngAppName)
     })
     .directive('loginWgt', function () {
         return {
+            restrict: 'EA',
             template: '<div>login widget</div>',
             link: function (scope, elem, attrs) {
 
